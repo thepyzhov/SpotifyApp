@@ -128,8 +128,8 @@
 		25BD9F79280856D100CCACA6 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				25BD9F832808662D00CCACA6 /* Other */,
 				25BD9F822808661C00CCACA6 /* Core */,
+				25BD9F832808662D00CCACA6 /* Other */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -147,8 +147,8 @@
 		25BD9F7B280856EB00CCACA6 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				25BD9F92280867BE00CCACA6 /* AuthManager.swift */,
 				25BD9F94280867DB00CCACA6 /* APICaller.swift */,
+				25BD9F92280867BE00CCACA6 /* AuthManager.swift */,
 				25BD9F96280867E400CCACA6 /* HapticsManager.swift */,
 			);
 			path = Managers;
@@ -169,12 +169,12 @@
 			isa = PBXGroup;
 			children = (
 				25BD9F842808664B00CCACA6 /* AuthViewController.swift */,
-				25BD9F862808666200CCACA6 /* WelcomeViewController.swift */,
-				25BD9F882808668600CCACA6 /* SettingsViewController.swift */,
-				25BD9F8A280866AA00CCACA6 /* ProfileViewController.swift */,
 				25BD9F8C280866BE00CCACA6 /* PlayerViewController.swift */,
 				25BD9F8E280866D700CCACA6 /* PlaylistViewController.swift */,
+				25BD9F8A280866AA00CCACA6 /* ProfileViewController.swift */,
 				25BD9F90280866F100CCACA6 /* SearchResultsViewController.swift */,
+				25BD9F882808668600CCACA6 /* SettingsViewController.swift */,
+				25BD9F862808666200CCACA6 /* WelcomeViewController.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
