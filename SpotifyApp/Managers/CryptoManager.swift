@@ -24,6 +24,8 @@ fileprivate func |> <A, B>(a: A, f: (A) throws -> B) throws -> B {
 
 final class CryptoManager {
     static let shared = CryptoManager()
+    
+    private init() {}
 
     enum PKCEError: Error {
         case failedToGenerateRandomOctets
