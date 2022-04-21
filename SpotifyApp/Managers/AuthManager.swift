@@ -14,9 +14,39 @@ final class AuthManager {
     
     public var signInURL: URL? {
         let base = "https://accounts.spotify.com/authorize"
-        let urlString = "\(base)?response_type=code&client_id=\(Constants.clientID)&scope=\(Constants.scopes)&redirect_uri=\(Constants.redirectURI)&show_dialog=true"
+        let urlString = "\(base)?response_type=code&client_id=\(Constants.clientID)&scope=\(Constants.scopes)&redirect_uri=\(Constants.redirectURI)&show_dialog=true&code_challenge_method=S256&code_challenge=\(challenge)"
         
         return URL(string: urlString)
+    }
+    
+    private var verifierString: String?
+    
+    private var verifier: String {
+        if verifierString == nil {
+            do {
+                verifierString = try CryptoManager.shared.generateVerifier()
+            } catch {
+                print("Error while generating Verifier")
+                return "none"
+            }
+        }
+        
+        return verifierString!
+    }
+    
+    private var challengeKey: String?
+    
+    private var challenge: String {
+        if challengeKey == nil {
+            do {
+                challengeKey = try CryptoManager.shared.challenge(for: verifier)
+            } catch {
+                print("Error while generating Challenge")
+                return "none"
+            }
+        }
+        
+        return challengeKey!
     }
     
     var isSignedIn: Bool {
@@ -59,22 +89,17 @@ final class AuthManager {
             URLQueryItem(name: "code",
                          value: code),
             URLQueryItem(name: "redirect_uri",
-                         value: Constants.redirectURI)
+                         value: Constants.redirectURI),
+            URLQueryItem(name: "client_id",
+                         value: Constants.clientID),
+            URLQueryItem(name: "code_verifier",
+                         value: verifier)
         ]
         
         var request = URLRequest(url: tokenAPIURL)
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         request.httpBody = components.query?.data(using: .utf8)
-        
-        let basicToken = Constants.clientID + ":" + Constants.clientSecret
-        let data = basicToken.data(using: .utf8)
-        guard let base64String = data?.base64EncodedString() else {
-            print("Failure to get base64")
-            completion(false)
-            return
-        }
-        request.setValue("Basic \(base64String)", forHTTPHeaderField: "Authorization")
         
         let task = URLSession.shared.dataTask(with: request) { [weak self] data, _, error in
             guard let data = data, error == nil else {
@@ -121,15 +146,6 @@ final class AuthManager {
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         request.httpBody = components.query?.data(using: .utf8)
         
-        let basicToken = Constants.clientID + ":" + Constants.clientSecret
-        let data = basicToken.data(using: .utf8)
-        guard let base64String = data?.base64EncodedString() else {
-            print("Failure to get base64")
-            completion(false)
-            return
-        }
-        request.setValue("Basic \(base64String)", forHTTPHeaderField: "Authorization")
-        
         let task = URLSession.shared.dataTask(with: request) { [weak self] data, _, error in
             guard let data = data, error == nil else {
                 completion(false)
@@ -157,8 +173,7 @@ final class AuthManager {
     }
     
     struct Constants {
-        static let clientID = ""
-        static let clientSecret = ""
+        static let clientID = "7f226c99f6174a8db6d1f870c0592378"
         static let tokenAPIURL = "https://accounts.spotify.com/api/token"
         static let redirectURI = "https://spotify.com/"
         static let scopes = "user-read-private%20playlist-modify-public%20playlist-read-private%20playlist-modify-private%20user-follow-read%20user-library-modify%20user-library-read%20user-read-email"
