@@ -138,7 +138,9 @@ final class AuthManager {
             URLQueryItem(name: "grant_type",
                          value: "refresh_token"),
             URLQueryItem(name: "refresh_token",
-                         value: refreshToken)
+                         value: refreshToken),
+            URLQueryItem(name: "client_id",
+                         value: Constants.clientID)
         ]
         
         var request = URLRequest(url: tokenAPIURL)
