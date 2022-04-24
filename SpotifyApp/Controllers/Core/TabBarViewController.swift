@@ -28,6 +28,10 @@ class TabBarViewController: UITabBarController {
         let searchNavigationViewController = UINavigationController(rootViewController: searchViewController)
         let libraryNavigationViewController = UINavigationController(rootViewController: libraryViewController)
         
+        homeNavigationViewController.navigationBar.tintColor = .label
+        searchNavigationViewController.navigationBar.tintColor = .label
+        libraryNavigationViewController.navigationBar.tintColor = .label
+        
         homeNavigationViewController.navigationBar.prefersLargeTitles = true
         searchNavigationViewController.navigationBar.prefersLargeTitles = true
         libraryNavigationViewController.navigationBar.prefersLargeTitles = true
