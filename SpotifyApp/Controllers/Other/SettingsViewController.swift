@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SettingsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class SettingsViewController: UIViewController {
     
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
@@ -57,9 +57,11 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     private func signOutTapped() {
         
     }
-    
-    // MARK: - TableView
-    
+}
+
+// MARK: - TableView DataSource & Delegate
+
+extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }

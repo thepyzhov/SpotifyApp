@@ -8,7 +8,7 @@
 import UIKit
 import WebKit
 
-class AuthViewController: UIViewController, WKNavigationDelegate {
+class AuthViewController: UIViewController {
     
     private let webView: WKWebView = {
         let preferences = WKWebpagePreferences()
@@ -42,7 +42,11 @@ class AuthViewController: UIViewController, WKNavigationDelegate {
         super.viewWillLayoutSubviews()
         webView.frame = view.bounds
     }
-    
+}
+
+// MARK: - WKNavigation Delegate
+
+extension AuthViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         guard let url = webView.url else {
             return
@@ -61,5 +65,4 @@ class AuthViewController: UIViewController, WKNavigationDelegate {
             }
         }
     }
-
 }
