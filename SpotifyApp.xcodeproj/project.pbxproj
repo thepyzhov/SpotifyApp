@@ -18,7 +18,7 @@
 		25B4FB0E28109E60009DF190 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B4FB0D28109E60009DF190 /* Extensions.swift */; };
 		25BD9F63280856AC00CCACA6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BD9F62280856AC00CCACA6 /* AppDelegate.swift */; };
 		25BD9F65280856AC00CCACA6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BD9F64280856AC00CCACA6 /* SceneDelegate.swift */; };
-		25BD9F67280856AC00CCACA6 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BD9F66280856AC00CCACA6 /* HomeViewController.swift */; };
+		25BD9F67280856AC00CCACA6 /* BrowseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BD9F66280856AC00CCACA6 /* BrowseViewController.swift */; };
 		25BD9F6C280856AF00CCACA6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25BD9F6B280856AF00CCACA6 /* Assets.xcassets */; };
 		25BD9F6F280856AF00CCACA6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25BD9F6D280856AF00CCACA6 /* LaunchScreen.storyboard */; };
 		25BD9F7D280865A600CCACA6 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BD9F7C280865A600CCACA6 /* TabBarViewController.swift */; };
@@ -38,6 +38,10 @@
 		25BD9F9B2808684300CCACA6 /* AudioTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BD9F9A2808684300CCACA6 /* AudioTrack.swift */; };
 		25BD9F9D2808684E00CCACA6 /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BD9F9C2808684E00CCACA6 /* Artist.swift */; };
 		25BD9F9F2808685500CCACA6 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BD9F9E2808685500CCACA6 /* UserProfile.swift */; };
+		25D33839281856B90047A891 /* NewReleaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D33838281856B90047A891 /* NewReleaseCollectionViewCell.swift */; };
+		25D3383B281856E50047A891 /* FeaturedPlaylistCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D3383A281856E50047A891 /* FeaturedPlaylistCollectionViewCell.swift */; };
+		25D3383D2818571F0047A891 /* RecommendedTrackCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D3383C2818571F0047A891 /* RecommendedTrackCollectionViewCell.swift */; };
+		25D3383F2818584D0047A891 /* NewReleasesCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D3383E2818584D0047A891 /* NewReleasesCellViewModel.swift */; };
 		AA5465904C636586202934E5 /* Pods_SpotifyApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC2E65BA56FDC4E64AE1E30B /* Pods_SpotifyApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -55,7 +59,7 @@
 		25BD9F5F280856AC00CCACA6 /* SpotifyApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpotifyApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25BD9F62280856AC00CCACA6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		25BD9F64280856AC00CCACA6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		25BD9F66280856AC00CCACA6 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		25BD9F66280856AC00CCACA6 /* BrowseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseViewController.swift; sourceTree = "<group>"; };
 		25BD9F6B280856AF00CCACA6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		25BD9F6E280856AF00CCACA6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		25BD9F70280856AF00CCACA6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -76,6 +80,10 @@
 		25BD9F9A2808684300CCACA6 /* AudioTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioTrack.swift; sourceTree = "<group>"; };
 		25BD9F9C2808684E00CCACA6 /* Artist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
 		25BD9F9E2808685500CCACA6 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		25D33838281856B90047A891 /* NewReleaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewReleaseCollectionViewCell.swift; sourceTree = "<group>"; };
+		25D3383A281856E50047A891 /* FeaturedPlaylistCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedPlaylistCollectionViewCell.swift; sourceTree = "<group>"; };
+		25D3383C2818571F0047A891 /* RecommendedTrackCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendedTrackCollectionViewCell.swift; sourceTree = "<group>"; };
+		25D3383E2818584D0047A891 /* NewReleasesCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NewReleasesCellViewModel.swift; path = SpotifyApp/Views/Browse/NewReleasesCellViewModel.swift; sourceTree = SOURCE_ROOT; };
 		37559DBED06514C98AE84662 /* Pods-SpotifyApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotifyApp.debug.xcconfig"; path = "Target Support Files/Pods-SpotifyApp/Pods-SpotifyApp.debug.xcconfig"; sourceTree = "<group>"; };
 		EC2E65BA56FDC4E64AE1E30B /* Pods_SpotifyApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SpotifyApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -162,6 +170,7 @@
 		25BD9F77280856C700CCACA6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				25D33837281821300047A891 /* Browse */,
 				25BD9F6D280856AF00CCACA6 /* LaunchScreen.storyboard */,
 			);
 			path = Views;
@@ -170,6 +179,7 @@
 		25BD9F78280856CC00CCACA6 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				25D3383E2818584D0047A891 /* NewReleasesCellViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -208,7 +218,7 @@
 		25BD9F822808661C00CCACA6 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				25BD9F66280856AC00CCACA6 /* HomeViewController.swift */,
+				25BD9F66280856AC00CCACA6 /* BrowseViewController.swift */,
 				25BD9F802808661600CCACA6 /* LibraryViewController.swift */,
 				25BD9F7E2808660900CCACA6 /* SearchViewController.swift */,
 				25BD9F7C280865A600CCACA6 /* TabBarViewController.swift */,
@@ -228,6 +238,16 @@
 				25BD9F862808666200CCACA6 /* WelcomeViewController.swift */,
 			);
 			path = Other;
+			sourceTree = "<group>";
+		};
+		25D33837281821300047A891 /* Browse */ = {
+			isa = PBXGroup;
+			children = (
+				25D33838281856B90047A891 /* NewReleaseCollectionViewCell.swift */,
+				25D3383A281856E50047A891 /* FeaturedPlaylistCollectionViewCell.swift */,
+				25D3383C2818571F0047A891 /* RecommendedTrackCollectionViewCell.swift */,
+			);
+			path = Browse;
 			sourceTree = "<group>";
 		};
 		9A4D72EADDC5BC9801055476 /* Frameworks */ = {
@@ -352,7 +372,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				25D3383F2818584D0047A891 /* NewReleasesCellViewModel.swift in Sources */,
 				25BD9F7F2808660900CCACA6 /* SearchViewController.swift in Sources */,
+				25D33839281856B90047A891 /* NewReleaseCollectionViewCell.swift in Sources */,
+				25D3383D2818571F0047A891 /* RecommendedTrackCollectionViewCell.swift in Sources */,
 				25BD9F992808683500CCACA6 /* Playlist.swift in Sources */,
 				25BD9F93280867BE00CCACA6 /* AuthManager.swift in Sources */,
 				25BD9F91280866F100CCACA6 /* SearchResultsViewController.swift in Sources */,
@@ -367,10 +390,11 @@
 				25BD9F97280867E400CCACA6 /* HapticsManager.swift in Sources */,
 				25B4FB0E28109E60009DF190 /* Extensions.swift in Sources */,
 				25BD9F9B2808684300CCACA6 /* AudioTrack.swift in Sources */,
-				25BD9F67280856AC00CCACA6 /* HomeViewController.swift in Sources */,
+				25BD9F67280856AC00CCACA6 /* BrowseViewController.swift in Sources */,
 				25BD9F852808664B00CCACA6 /* AuthViewController.swift in Sources */,
 				25BD9F63280856AC00CCACA6 /* AppDelegate.swift in Sources */,
 				25BD9F9F2808685500CCACA6 /* UserProfile.swift in Sources */,
+				25D3383B281856E50047A891 /* FeaturedPlaylistCollectionViewCell.swift in Sources */,
 				25BD9F812808661600CCACA6 /* LibraryViewController.swift in Sources */,
 				25BD9F9D2808684E00CCACA6 /* Artist.swift in Sources */,
 				25BD9F8F280866D700CCACA6 /* PlaylistViewController.swift in Sources */,
@@ -529,7 +553,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -558,7 +582,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

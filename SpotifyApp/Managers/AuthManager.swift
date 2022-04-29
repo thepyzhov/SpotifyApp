@@ -7,19 +7,19 @@
 
 import Foundation
 
+private enum Constants {
+    static let clientID = "7f226c99f6174a8db6d1f870c0592378"
+    static let tokenAPIURL = "https://accounts.spotify.com/api/token"
+    static let redirectURI = "https://spotify.com/"
+    static let scopes = "user-read-private%20playlist-modify-public%20playlist-read-private%20playlist-modify-private%20user-follow-read%20user-library-modify%20user-library-read%20user-read-email"
+}
+
 final class AuthManager {
     static let shared = AuthManager()
     
     private var refreshingToken = false
     
     private init() {}
-    
-    struct Constants {
-        static let clientID = "7f226c99f6174a8db6d1f870c0592378"
-        static let tokenAPIURL = "https://accounts.spotify.com/api/token"
-        static let redirectURI = "https://spotify.com/"
-        static let scopes = "user-read-private%20playlist-modify-public%20playlist-read-private%20playlist-modify-private%20user-follow-read%20user-library-modify%20user-library-read%20user-read-email"
-    }
     
     public var signInURL: URL? {
         let base = "https://accounts.spotify.com/authorize"
@@ -35,7 +35,7 @@ final class AuthManager {
             do {
                 verifierString = try CryptoManager.shared.generateVerifier()
             } catch {
-                print("Error while generating Verifier")
+                //Logger().log(<#T##os.OSLogMessage#>) // "Error while generating Verifier"
                 return "none"
             }
         }
