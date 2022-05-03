@@ -7,14 +7,14 @@
 
 import Foundation
 
+private enum Constants {
+    static let baseAPIURL = "https://api.spotify.com/v1"
+}
+
 final class APICaller {
     static let shared = APICaller()
     
     private init() {}
-    
-    struct Constants {
-        static let baseAPIURL = "https://api.spotify.com/v1"
-    }
     
     enum APIError: Error {
         case failedToGetData
@@ -25,11 +25,31 @@ final class APICaller {
         case POST
     }
     
+    // MARK: - Albums
+    
+    public func getAlbumDetails(for album: Album, completion: @escaping (Result<AlbumDetailsResponse, Error>) -> Void) {
+        createRequest(with: URL(string: Constants.baseAPIURL + "/albums/\(album.id)"), type: .GET) { [weak self] request in
+            self?.makeRequest(with: request, for: AlbumDetailsResponse.self, completion: completion)
+        }
+    }
+    
+    // MARK: - Playlists
+    
+    public func getPlaylistDetails(for playlist: Playlist, completion: @escaping (Result<PlaylistDetailsResponse, Error>) -> Void) {
+        createRequest(with: URL(string: Constants.baseAPIURL + "/playlists/\(playlist.id)"), type: .GET) { [weak self] request in
+            self?.makeRequest(with: request, for: PlaylistDetailsResponse.self, completion: completion)
+        }
+    }
+    
+    // MARK: - Profile
+    
     public func getCurrentUserProfile(completion: @escaping (Result<UserProfile, Error>) -> Void) {
         createRequest(with: URL(string: Constants.baseAPIURL + "/me"), type: .GET) { [weak self] request in
             self?.makeRequest(with: request, for: UserProfile.self, completion: completion)
         }
     }
+    
+    // MARK: - Browse
     
     public func getNewReleases(completion: @escaping ((Result<NewReleasesResponse, Error>)) -> Void) {
         createRequest(with: URL(string: Constants.baseAPIURL + "/browse/new-releases?limit=50"), type: .GET) { [weak self] request in

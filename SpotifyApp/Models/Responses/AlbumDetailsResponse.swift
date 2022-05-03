@@ -1,32 +1,32 @@
 //
-//  AudioTrack.swift
+//  AlbumDetailsResponse.swift
 //  SpotifyApp
 //
-//  Created by Dmitry Pyzhov on 14.04.2022.
+//  Created by Dmitry Pyzhov on 03.05.2022.
 //
 
 import Foundation
 
-struct AudioTrack: Codable {
-    let album: Album?
+struct AlbumDetailsResponse: Codable {
+    let albumType: String
     let artists: [Artist]
     let availableMarkets: [String]
-    let discNumber: Int
-    let durationMs: Int
-    let explicit: Bool
     let externalUrls: [String: String]
     let id: String
+    let images: [APIImage]
+    let label: String
     let name: String
+    let tracks: TracksResponse
     
     enum CodingKeys: String, CodingKey {
-        case album
+        case albumType = "album_type"
         case artists
         case availableMarkets = "available_markets"
-        case discNumber = "disc_number"
-        case durationMs = "duration_ms"
-        case explicit
         case externalUrls = "external_urls"
         case id
+        case images
+        case label
         case name
+        case tracks
     }
 }
