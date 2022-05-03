@@ -38,7 +38,7 @@ final class APICaller {
     }
     
     public func getFeaturedPlaylists(completion: @escaping ((Result<FeaturedPlaylistsResponse, Error>) -> Void)) {
-        createRequest(with: URL(string: Constants.baseAPIURL + "/browse/featured-playlists?limit=2"), type: .GET) { [weak self] request in
+        createRequest(with: URL(string: Constants.baseAPIURL + "/browse/featured-playlists?limit=20"), type: .GET) { [weak self] request in
             self?.makeRequest(with: request, for: FeaturedPlaylistsResponse.self, completion: completion)
         }
     }
@@ -58,7 +58,6 @@ final class APICaller {
     
     // MARK: - Private
     
-    // Framework MOYA (почитать про слои нетворка)
     private func makeRequest<T: Codable>(with request: URLRequest, for type: T.Type, completion: @escaping (Result<T, Error>) -> Void) {
         let task = URLSession.shared.dataTask(with: request) { data, _, error in
             guard let data = data, error == nil else {

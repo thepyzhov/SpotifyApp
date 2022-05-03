@@ -9,8 +9,8 @@ import UIKit
 
 enum BrowseSectionType {
     case newReleases(viewModels: [NewReleasesCellViewModel])
-    case featuredPlaylists(viewModels: [NewReleasesCellViewModel])
-    case recommendedTracks(viewModels: [NewReleasesCellViewModel])
+    case featuredPlaylists(viewModels: [FeaturedPlaylistCellViewModel])
+    case recommendedTracks(viewModels: [RecommendedTrackCellViewModel])
 }
 
 private enum Constants {
@@ -133,9 +133,7 @@ class BrowseViewController: UIViewController {
                 return
             }
             
-            self.configureModels(newAlbums: newAlbums,
-                                 playlists: playlists,
-                                 tracks: tracks)
+            self.configureModels(newAlbums: newAlbums, playlists: playlists, tracks: tracks)
         }
     }
     
@@ -148,8 +146,13 @@ class BrowseViewController: UIViewController {
                 artistName: $0.artists.first?.name ?? "-"
             )
         })))
-        sections.append(.featuredPlaylists(viewModels: []))
-        sections.append(.recommendedTracks(viewModels: []))
+        sections.append(.featuredPlaylists(viewModels: playlists.compactMap({
+            return FeaturedPlaylistCellViewModel(name: $0.name, artworkURL: URL(string: $0.images.first?.url ?? ""), creatorName: $0.owner.displayName)
+        })))
+        sections.append(.recommendedTracks(viewModels: tracks.compactMap({
+            return RecommendedTrackCellViewModel(name: $0.name, artistName: $0.artists.first?.name ?? "-", artworkURL: URL(string: $0.album.images.first?.url ?? ""))
+        })))
+        
         collectionView.reloadData()
     }
     
@@ -304,7 +307,8 @@ extension BrowseViewController: UICollectionViewDataSource, UICollectionViewDele
             ) as? FeaturedPlaylistCollectionViewCell else {
                 return UICollectionViewCell()
             }
-            cell.backgroundColor = .blue
+            let viewModel = viewModels[indexPath.row]
+            cell.configure(with: viewModel)
             return cell
         case .recommendedTracks(let viewModels):
             guard let cell = collectionView.dequeueReusableCell(
@@ -313,7 +317,8 @@ extension BrowseViewController: UICollectionViewDataSource, UICollectionViewDele
             ) as? RecommendedTrackCollectionViewCell else {
                 return UICollectionViewCell()
             }
-            cell.backgroundColor = .orange
+            let viewModel = viewModels[indexPath.row]
+            cell.configure(with: viewModel)
             return cell
         }
     }
