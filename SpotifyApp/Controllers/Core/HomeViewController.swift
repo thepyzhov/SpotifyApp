@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum BrowseSectionType {
+enum HomeSectionType {
     case newReleases(viewModels: [NewReleasesCellViewModel])
     case featuredPlaylists(viewModels: [FeaturedPlaylistCellViewModel])
     case recommendedTracks(viewModels: [RecommendedTrackCellViewModel])
@@ -17,7 +17,7 @@ private enum Constants {
     static let sectionItemEdgeInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
 }
 
-class BrowseViewController: UIViewController {
+class HomeViewController: UIViewController {
     
     private var newAlbums: [Album] = []
     private var playlists: [Playlist] = []
@@ -26,11 +26,11 @@ class BrowseViewController: UIViewController {
     private var collectionView: UICollectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: UICollectionViewCompositionalLayout { sectionIndex, _ -> NSCollectionLayoutSection? in
-            return BrowseViewController.createSectionLayout(section: sectionIndex)
+            return HomeViewController.createSectionLayout(section: sectionIndex)
         }
     )
     
-    private var sections = [BrowseSectionType]()
+    private var sections = [HomeSectionType]()
     
     private let spinner: UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView()
@@ -276,7 +276,7 @@ class BrowseViewController: UIViewController {
 
 // MARK: - CollectionView DataSource & Delegate
 
-extension BrowseViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let type = sections[section]
         

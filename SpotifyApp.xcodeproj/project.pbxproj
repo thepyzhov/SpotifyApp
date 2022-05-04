@@ -22,7 +22,7 @@
 		25B4FB0E28109E60009DF190 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B4FB0D28109E60009DF190 /* Extensions.swift */; };
 		25BD9F63280856AC00CCACA6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BD9F62280856AC00CCACA6 /* AppDelegate.swift */; };
 		25BD9F65280856AC00CCACA6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BD9F64280856AC00CCACA6 /* SceneDelegate.swift */; };
-		25BD9F67280856AC00CCACA6 /* BrowseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BD9F66280856AC00CCACA6 /* BrowseViewController.swift */; };
+		25BD9F67280856AC00CCACA6 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BD9F66280856AC00CCACA6 /* HomeViewController.swift */; };
 		25BD9F6C280856AF00CCACA6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25BD9F6B280856AF00CCACA6 /* Assets.xcassets */; };
 		25BD9F6F280856AF00CCACA6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25BD9F6D280856AF00CCACA6 /* LaunchScreen.storyboard */; };
 		25BD9F7D280865A600CCACA6 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BD9F7C280865A600CCACA6 /* TabBarViewController.swift */; };
@@ -69,7 +69,7 @@
 		25BD9F5F280856AC00CCACA6 /* SpotifyApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpotifyApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25BD9F62280856AC00CCACA6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		25BD9F64280856AC00CCACA6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		25BD9F66280856AC00CCACA6 /* BrowseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseViewController.swift; sourceTree = "<group>"; };
+		25BD9F66280856AC00CCACA6 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		25BD9F6B280856AF00CCACA6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		25BD9F6E280856AF00CCACA6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		25BD9F70280856AF00CCACA6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -225,7 +225,7 @@
 		25BD9F822808661C00CCACA6 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				25BD9F66280856AC00CCACA6 /* BrowseViewController.swift */,
+				25BD9F66280856AC00CCACA6 /* HomeViewController.swift */,
 				25BD9F802808661600CCACA6 /* LibraryViewController.swift */,
 				25BD9F7E2808660900CCACA6 /* SearchViewController.swift */,
 				25BD9F7C280865A600CCACA6 /* TabBarViewController.swift */,
@@ -413,7 +413,7 @@
 				25BD9F97280867E400CCACA6 /* HapticsManager.swift in Sources */,
 				25B4FB0E28109E60009DF190 /* Extensions.swift in Sources */,
 				25BD9F9B2808684300CCACA6 /* AudioTrack.swift in Sources */,
-				25BD9F67280856AC00CCACA6 /* BrowseViewController.swift in Sources */,
+				25BD9F67280856AC00CCACA6 /* HomeViewController.swift in Sources */,
 				255CA9812821BBA5008C6B2B /* AlbumDetailsResponse.swift in Sources */,
 				25BD9F852808664B00CCACA6 /* AuthViewController.swift in Sources */,
 				25BD9F63280856AC00CCACA6 /* AppDelegate.swift in Sources */,
