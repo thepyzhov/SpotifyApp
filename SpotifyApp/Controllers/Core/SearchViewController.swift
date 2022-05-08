@@ -16,7 +16,7 @@ class SearchViewController: UIViewController {
     
     let searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: SearchResultsViewController())
-        searchController.searchBar.placeholder = "Songs, Artists, Albums"
+        searchController.searchBar.placeholder = "Artists, songs, or podcasts"
         searchController.searchBar.searchBarStyle = .minimal
         searchController.definesPresentationContext = true
         return searchController
@@ -31,6 +31,8 @@ class SearchViewController: UIViewController {
             group.contentInsets = Constants.collectionViewGroupEdgeInsets
             return NSCollectionLayoutSection(group: group)
     }))
+    
+    private var categories = [Category]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,10 +42,22 @@ class SearchViewController: UIViewController {
         navigationItem.searchController = searchController
         
         view.addSubview(collectionView)
-        collectionView.register(GenreCollectionViewCell.self, forCellWithReuseIdentifier: GenreCollectionViewCell.identifier)
+        collectionView.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: CategoryCollectionViewCell.identifier)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = .systemBackground
+        
+        APICaller.shared.getCategories { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let categories):
+                    self?.categories = categories
+                    self?.collectionView.reloadData()
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -77,14 +91,15 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        20
+        return categories.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GenreCollectionViewCell.identifier, for: indexPath) as? GenreCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCollectionViewCell.identifier, for: indexPath) as? CategoryCollectionViewCell else {
             return UICollectionViewCell()
         }
-        cell.configure(with: "Rock")
+        let category = categories[indexPath.row]
+        cell.configure(with: CategoryCollectionViewCellViewModel(title: category.name, artworkURL: URL(string: category.icons.first?.url ?? "")))
         return cell
     }
 }

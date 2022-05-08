@@ -11,10 +11,6 @@ struct FeaturedPlaylistsResponse: Codable {
     let playlists: PlaylistResponse
 }
 
-struct PlaylistResponse: Codable {
-    let items: [Playlist]
-}
-
 struct User: Codable {
     let displayName: String
     let externalUrls: [String: String]
