@@ -93,4 +93,12 @@ extension CategoryViewController: UICollectionViewDataSource, UICollectionViewDe
         )
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        let playlist = playlists[indexPath.row]
+        let playlistViewController = PlaylistViewController(playlist: playlist)
+        playlistViewController.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(playlistViewController, animated: true)
+    }
 }
