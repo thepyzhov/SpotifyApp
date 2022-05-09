@@ -102,4 +102,13 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
         cell.configure(with: CategoryCollectionViewCellViewModel(title: category.name, artworkURL: URL(string: category.icons.first?.url ?? "")))
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        
+        let category = categories[indexPath.row]
+        let categoryViewController = CategoryViewController(category: category)
+        categoryViewController.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(categoryViewController, animated: true)
+    }
 }
