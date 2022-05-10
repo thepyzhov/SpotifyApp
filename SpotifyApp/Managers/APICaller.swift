@@ -9,6 +9,8 @@ import Foundation
 
 private enum Constants {
     static let baseAPIURL = "https://api.spotify.com/v1"
+    
+    static let searchQueryType = "album,artist,playlist,track"
 }
 
 final class APICaller {
@@ -123,10 +125,9 @@ final class APICaller {
     
     public func search(with query: String, completion: @escaping (Result<[SearchResult], Error>) -> Void) {
         createRequest(
-            with: URL(string: Constants.baseAPIURL + "/search?limit=10&type=album,artist,playlist,track&q=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"),
+            with: URL(string: Constants.baseAPIURL + "/search?limit=10&type=\(Constants.searchQueryType)&q=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"),
             type: .GET
         ) { request in
-            print(request.url?.absoluteURL ?? "none")
             let task = URLSession.shared.dataTask(with: request) { data, _, error in
                 guard let data = data, error == nil else {
                     completion(.failure(APIError.failedToGetData))
