@@ -39,6 +39,7 @@ class SearchViewController: UIViewController {
 
         view.backgroundColor = .systemBackground
         searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
         navigationItem.searchController = searchController
         
         view.addSubview(collectionView)
@@ -67,20 +68,37 @@ class SearchViewController: UIViewController {
     }
 }
 
-// MARK: - Search Results Updating
+// MARK: - Search Results Updater
 
 extension SearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
+        
+    }
+}
+
+// MARK: - SearchBar Delegate
+
+extension SearchViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let resultsController = searchController.searchResultsController as? SearchResultsViewController,
-              let query = searchController.searchBar.text,
+              let query = searchBar.text,
               !query.trimmingCharacters(in: .whitespaces).isEmpty else {
             return
         }
-        // resultsController.update(with: results)
-        print(query)
-        // TODO: Perform search
+        
+        resultsController.delegate = self
+        
+        APICaller.shared.search(with: query) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let results):
+                    resultsController.update(with: results)
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
     }
-    
 }
 
 // MARK: - CollectionView DataSource & Delegate
@@ -110,5 +128,28 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
         let categoryViewController = CategoryViewController(category: category)
         categoryViewController.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(categoryViewController, animated: true)
+    }
+}
+
+// MARK: - SearchResultsViewController Delegate
+
+extension SearchViewController: SearchResultsViewControllerDelegate {
+    func didTapResult(_ result: SearchResult) {
+        switch result {
+        case .album(let model):
+            let albumViewController = AlbumViewController(album: model)
+            albumViewController.navigationItem.largeTitleDisplayMode = .never
+            navigationController?.pushViewController(albumViewController, animated: true)
+        case .artist(let model):
+            // TODO: - ArtistViewController
+            break
+        case .playlist(let model):
+            let playlistViewController = PlaylistViewController(playlist: model)
+            playlistViewController.navigationItem.largeTitleDisplayMode = .never
+            navigationController?.pushViewController(playlistViewController, animated: true)
+        case .track(let model):
+            // TODO: - TrackViewController
+            break
+        }
     }
 }
