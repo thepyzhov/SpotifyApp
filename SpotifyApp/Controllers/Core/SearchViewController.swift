@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SafariServices
 
 private enum Constants {
     static let collectionViewItemEdgeInsets = NSDirectionalEdgeInsets(top: 2, leading: 7, bottom: 2, trailing: 7)
@@ -136,18 +137,22 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
 extension SearchViewController: SearchResultsViewControllerDelegate {
     func didTapResult(_ result: SearchResult) {
         switch result {
-        case .album(let model):
-            let albumViewController = AlbumViewController(album: model)
+        case .album(let album):
+            let albumViewController = AlbumViewController(album: album)
             albumViewController.navigationItem.largeTitleDisplayMode = .never
             navigationController?.pushViewController(albumViewController, animated: true)
-        case .artist(let model):
+        case .artist(let artist):
             // TODO: - ArtistViewController
-            break
-        case .playlist(let model):
-            let playlistViewController = PlaylistViewController(playlist: model)
+            guard let url = URL(string: artist.externalUrls["spotify"] ?? "") else {
+                return
+            }
+            let artistViewController = SFSafariViewController(url: url)
+            present(artistViewController, animated: true)
+        case .playlist(let playlist):
+            let playlistViewController = PlaylistViewController(playlist: playlist)
             playlistViewController.navigationItem.largeTitleDisplayMode = .never
             navigationController?.pushViewController(playlistViewController, animated: true)
-        case .track(let model):
+        case .track(let track):
             // TODO: - TrackViewController
             break
         }
