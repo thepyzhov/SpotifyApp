@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import AVFoundation
 
 extension UIView {
     var width: CGFloat {
@@ -54,5 +55,22 @@ extension String {
             return string
         }
         return DateFormatter.displayDateFormatter.string(from: date)
+    }
+}
+
+extension AVQueuePlayer {
+    func advanceToPreviousItem(for currentItem: Int, with initialItems: [AVPlayerItem]) {
+        self.removeAllItems()
+        
+        for index in currentItem..<initialItems.count {
+            let playerItem: AVPlayerItem? = initialItems[index]
+            guard let playerItem = playerItem else {
+                continue
+            }
+            if self.canInsert(playerItem, after: nil) {
+                playerItem.seek(to: CMTime.zero, completionHandler: nil)
+                self.insert(playerItem, after: nil)
+            }
+        }
     }
 }

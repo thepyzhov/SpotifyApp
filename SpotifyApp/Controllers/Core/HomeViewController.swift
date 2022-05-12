@@ -75,7 +75,7 @@ class HomeViewController: UIViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    //MARK: - Private
+    // MARK: - Private
     
     private func fetchData() {
         let group = DispatchGroup()
@@ -394,7 +394,8 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             playlistViewController.navigationItem.largeTitleDisplayMode = .never
             navigationController?.pushViewController(playlistViewController, animated: true)
         case .recommendedTracks:
-            break
+            let track = tracks[indexPath.row]
+            PlaybackPresenter.shared.startPlayback(from: self, track: track)
         }
     }
 }
