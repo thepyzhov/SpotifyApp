@@ -13,6 +13,8 @@ private enum Constants {
 
 class LibraryPlaylistsViewController: UIViewController {
     
+    public var selectionHandler: ((Playlist) -> Void)?
+    
     var playlists = [Playlist]()
     
     private let noPlaylistsView = ActionLabelView()
@@ -31,6 +33,10 @@ class LibraryPlaylistsViewController: UIViewController {
         setUpTableView()
         setUpNoPlaylistsView()
         fetchPlaylists()
+        
+        if selectionHandler != nil {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(didTapClose))
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -107,6 +113,12 @@ class LibraryPlaylistsViewController: UIViewController {
             }
         }
     }
+    
+    // MARK: - Gestures
+    
+    @objc private func didTapClose() {
+        dismiss(animated: true)
+    }
 }
 
 // MARK: - ActionLabelView Delegate
@@ -146,6 +158,13 @@ extension LibraryPlaylistsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let playlist = playlists[indexPath.row]
+        
+        guard selectionHandler == nil else {
+            selectionHandler?(playlist)
+            dismiss(animated: true)
+            return
+        }
+        
         let playlistViewController = PlaylistViewController(playlist: playlist)
         playlistViewController.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(playlistViewController, animated: true)
