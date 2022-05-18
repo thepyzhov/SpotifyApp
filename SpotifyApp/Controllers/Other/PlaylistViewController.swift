@@ -13,6 +13,8 @@ private enum Constants {
 
 class PlaylistViewController: UIViewController {
 
+    public var isOwner = false
+    
     private let playlist: Playlist
     
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewCompositionalLayout(sectionProvider: { _, _ -> NSCollectionLayoutSection? in
@@ -64,8 +66,8 @@ class PlaylistViewController: UIViewController {
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                 withReuseIdentifier: PlaylistHeaderCollectionReusableView.identifier)
         collectionView.backgroundColor = .systemBackground
-        collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.delegate = self
         
         APICaller.shared.getPlaylistDetails(for: playlist) { [weak self] result in
             DispatchQueue.main.async {
@@ -86,7 +88,14 @@ class PlaylistViewController: UIViewController {
             }
         }
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(didTapShare))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .action,
+            target: self,
+            action: #selector(didTapShare)
+        )
+        
+        let gesture = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress))
+        collectionView.addGestureRecognizer(gesture)
     }
     
     override func viewDidLayoutSubviews() {
@@ -94,6 +103,8 @@ class PlaylistViewController: UIViewController {
         
         collectionView.frame = view.bounds
     }
+    
+    //MARK: - Gestures
     
     @objc private func didTapShare() {
         guard let url = URL(string: playlist.externalUrls["spotify"] ?? "") else {
@@ -103,11 +114,50 @@ class PlaylistViewController: UIViewController {
         activityViewController.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(activityViewController, animated: true)
     }
+    
+    @objc private func didLongPress(_ gesture: UILongPressGestureRecognizer) {
+        guard gesture.state == .began else {
+            return
+        }
+        
+        let touchPoint = gesture.location(in: collectionView)
+        guard let indexPath = collectionView.indexPathForItem(at: touchPoint) else {
+            return
+        }
+        
+        let trackToDelete = tracks[indexPath.row]
+        let actionSheet = UIAlertController(
+            title: trackToDelete.name,
+            message: "Would you like to remove this from the playlist?",
+            preferredStyle: .actionSheet
+        )
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        actionSheet.addAction(UIAlertAction(
+            title: "Remove",
+            style: .destructive,
+            handler: { [weak self] _ in
+                guard let self = self else { return }
+                APICaller.shared.removeTrackFromPlaylist(track: trackToDelete, playlist: self.playlist) { success in
+                    DispatchQueue.main.async {
+                        if success {
+                            self.tracks.remove(at: indexPath.row)
+                            self.viewModels.remove(at: indexPath.row)
+                            self.collectionView.reloadData()
+                        } else {
+                            print("Failed to remove.")
+                        }
+                    }
+                }
+            })
+        )
+        
+        present(actionSheet, animated: true)
+    }
 }
 
-// MARK: - CollectionView DataSource & Delegate
+// MARK: - CollectionView DataSource
 
-extension PlaylistViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension PlaylistViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModels.count
     }
@@ -140,7 +190,11 @@ extension PlaylistViewController: UICollectionViewDataSource, UICollectionViewDe
         header.delegate = self
         return header
     }
-    
+}
+
+// MARK: - CollectionView Delegate
+
+extension PlaylistViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         

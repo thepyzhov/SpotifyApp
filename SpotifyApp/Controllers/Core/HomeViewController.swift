@@ -335,7 +335,6 @@ class HomeViewController: UIViewController {
                 let libraryPlaylistViewController = LibraryPlaylistsViewController()
                 libraryPlaylistViewController.selectionHandler = { playlist in
                     APICaller.shared.addTrackToPlaylist(track: model, playlist: playlist) { success in
-                        print("Added to playlist success: \(success)")
                     }
                 }
                 libraryPlaylistViewController.title = "Select Playlist"
