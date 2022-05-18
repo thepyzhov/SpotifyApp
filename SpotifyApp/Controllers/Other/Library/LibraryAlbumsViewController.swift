@@ -41,7 +41,7 @@ class LibraryAlbumsViewController: UIViewController {
             object: nil,
             queue: .main,
             using: { [weak self] _ in
-                self?.fetchAlbums() 
+                self?.fetchAlbums()
             }
         )
     }
@@ -147,6 +147,9 @@ extension LibraryAlbumsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        HapticsManager.shared.vibrateForSelection()
+        
         let album = albums[indexPath.row]
         let albumViewController = AlbumViewController(album: album)
         albumViewController.navigationItem.largeTitleDisplayMode = .never
