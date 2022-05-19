@@ -17,15 +17,4 @@ struct Album: Codable {
     let artists: [Artist]
     
     var images: [APIImage]
-    
-    enum CodingKeys: String, CodingKey {
-        case albumType = "album_type"
-        case availableMarkets = "available_markets"
-        case id
-        case name
-        case releaseDate = "release_date"
-        case totalTracks = "total_tracks"
-        case artists
-        case images
-    }
 }

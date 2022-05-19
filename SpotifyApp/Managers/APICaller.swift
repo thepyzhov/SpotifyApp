@@ -16,6 +16,12 @@ private enum Constants {
 final class APICaller {
     static let shared = APICaller()
     
+    private var decoder: JSONDecoder = {
+        let jsonDecoder = JSONDecoder()
+        jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+        return jsonDecoder
+    }()
+    
     private init() {}
     
     enum APIError: Error {
@@ -38,15 +44,15 @@ final class APICaller {
     }
     
     public func getCurrentUserAlbums(completion: @escaping (Result<[Album], Error>) -> Void) {
-        createRequest(with: URL(string: Constants.baseAPIURL + "/me/albums"), type: .GET) { request in
+        createRequest(with: URL(string: Constants.baseAPIURL + "/me/albums"), type: .GET) { [weak self] request in
             let task = URLSession.shared.dataTask(with: request) { data, _, error in
-                guard let data = data, error == nil else {
+                guard let data = data, error == nil, let self = self else {
                     completion(.failure(APIError.failedToGetData))
                     return
                 }
                 
                 do {
-                    let result = try JSONDecoder().decode(LibraryAlbumsResponse.self, from: data)
+                    let result = try self.decoder.decode(LibraryAlbumsResponse.self, from: data)
                     completion(.success(result.items.compactMap { $0.album }))
                 } catch {
                     completion(.failure(error))
@@ -80,15 +86,15 @@ final class APICaller {
     }
     
     public func getCurrentUserPlaylists(completion: @escaping (Result<[Playlist], Error>) -> Void) {
-        createRequest(with: URL(string: Constants.baseAPIURL + "/me/playlists?limit=50"), type: .GET) { request in
+        createRequest(with: URL(string: Constants.baseAPIURL + "/me/playlists?limit=50"), type: .GET) { [weak self] request in
             let task = URLSession.shared.dataTask(with: request) { data, _, error in
-                guard let data = data, error == nil else {
+                guard let data = data, error == nil, let self = self else {
                     completion(.failure(APIError.failedToGetData))
                     return
                 }
                 
                 do {
-                    let result = try JSONDecoder().decode(LibraryPlaylistsResponse.self, from: data)
+                    let result = try self.decoder.decode(LibraryPlaylistsResponse.self, from: data)
                     completion(.success(result.items))
                 } catch {
                     print(error.localizedDescription)
@@ -248,15 +254,15 @@ final class APICaller {
     // MARK: - Categories
     
     public func getCategories(completion: @escaping (Result<[Category], Error>) -> Void) {
-        createRequest(with: URL(string: Constants.baseAPIURL + "/browse/categories?limit=50"), type: .GET) { request in
+        createRequest(with: URL(string: Constants.baseAPIURL + "/browse/categories?limit=50"), type: .GET) { [weak self] request in
             let task = URLSession.shared.dataTask(with: request) { data, _, error in
-                guard let data = data, error == nil else {
+                guard let data = data, error == nil, let self = self else {
                     completion(.failure(APIError.failedToGetData))
                     return
                 }
                 
                 do {
-                    let result = try JSONDecoder().decode(AllCategoriesResponse.self, from: data)
+                    let result = try self.decoder.decode(AllCategoriesResponse.self, from: data)
                     completion(.success(result.categories.items))
                 } catch {
                     print(error.localizedDescription)
@@ -268,15 +274,15 @@ final class APICaller {
     }
     
     public func getCategoryPlaylists(category: Category, completion: @escaping (Result<[Playlist], Error>) -> Void) {
-        createRequest(with: URL(string: Constants.baseAPIURL + "/browse/categories/\(category.id)/playlists?limit=50"), type: .GET) { request in
+        createRequest(with: URL(string: Constants.baseAPIURL + "/browse/categories/\(category.id)/playlists?limit=50"), type: .GET) { [weak self] request in
             let task = URLSession.shared.dataTask(with: request) { data, _, error in
-                guard let data = data, error == nil else {
+                guard let data = data, error == nil, let self = self else {
                     completion(.failure(APIError.failedToGetData))
                     return
                 }
                 
                 do {
-                    let result = try JSONDecoder().decode(CategoryPlaylistsResponse.self, from: data)
+                    let result = try self.decoder.decode(CategoryPlaylistsResponse.self, from: data)
                     let playlists = result.playlists.items
                     completion(.success(playlists))
                 } catch {
@@ -294,15 +300,15 @@ final class APICaller {
         createRequest(
             with: URL(string: Constants.baseAPIURL + "/search?limit=10&type=\(Constants.searchQueryType)&q=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"),
             type: .GET
-        ) { request in
-            let task = URLSession.shared.dataTask(with: request) { data, _, error in
-                guard let data = data, error == nil else {
+        ) { [weak self] request in
+            let task = URLSession.shared.dataTask(with: request) { [weak self] data, _, error in
+                guard let data = data, error == nil, let self = self else {
                     completion(.failure(APIError.failedToGetData))
                     return
                 }
                 
                 do {
-                    let result = try JSONDecoder().decode(SearchResultsResponse.self, from: data)
+                    let result = try self.decoder.decode(SearchResultsResponse.self, from: data)
                     var searchResults = [SearchResult]()
                     searchResults.append(contentsOf: result.albums.items.compactMap { .album(model: $0) })
                     searchResults.append(contentsOf: result.artists.items.compactMap { .artist(model: $0) })
@@ -322,14 +328,14 @@ final class APICaller {
     // MARK: - Private
     
     private func makeRequest<T: Codable>(with request: URLRequest, for type: T.Type, completion: @escaping (Result<T, Error>) -> Void) {
-        let task = URLSession.shared.dataTask(with: request) { data, _, error in
-            guard let data = data, error == nil else {
+        let task = URLSession.shared.dataTask(with: request) { [weak self] data, _, error in
+            guard let data = data, error == nil, let self = self else {
                 completion(.failure(APIError.failedToGetData))
                 return
             }
             
             do {
-                let result = try JSONDecoder().decode(T.self, from: data)
+                let result = try self.decoder.decode(T.self, from: data)
                 completion(.success(result))
             } catch {
                 print(error.localizedDescription)

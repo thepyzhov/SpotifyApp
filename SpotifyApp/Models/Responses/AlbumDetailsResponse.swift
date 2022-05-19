@@ -17,16 +17,4 @@ struct AlbumDetailsResponse: Codable {
     let label: String
     let name: String
     let tracks: TracksResponse
-    
-    enum CodingKeys: String, CodingKey {
-        case albumType = "album_type"
-        case artists
-        case availableMarkets = "available_markets"
-        case externalUrls = "external_urls"
-        case id
-        case images
-        case label
-        case name
-        case tracks
-    }
 }

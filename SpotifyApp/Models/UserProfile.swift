@@ -16,15 +16,4 @@ struct UserProfile: Codable {
     let id: String
     let product: String
     let images: [APIImage]
-
-    enum CodingKeys: String, CodingKey, Codable {
-        case country
-        case displayName = "display_name"
-        case email
-        case explicitContent = "explicit_content"
-        case externalUrls = "external_urls"
-        case id
-        case product
-        case images
-    }
 }

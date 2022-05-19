@@ -14,15 +14,6 @@ struct PlaylistDetailsResponse: Codable {
     let images: [APIImage]
     let name: String
     let tracks: PlaylistTracksResponse
-    
-    enum CodingKeys: String, CodingKey {
-        case description
-        case externalUrls = "external_urls"
-        case id
-        case images
-        case name
-        case tracks
-    }
 }
 
 struct PlaylistTracksResponse: Codable {

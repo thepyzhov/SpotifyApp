@@ -14,13 +14,4 @@ struct Playlist: Codable {
     let images: [APIImage]
     let name: String
     let owner: User
-    
-    enum CodingKeys: String, CodingKey {
-        case description
-        case externalUrls = "external_urls"
-        case id
-        case images
-        case name
-        case owner
-    }
 }
