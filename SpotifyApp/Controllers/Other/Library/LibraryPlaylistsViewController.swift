@@ -21,7 +21,10 @@ class LibraryPlaylistsViewController: UIViewController {
     
     private let tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(SearchResultSubtitleTableViewCell.self, forCellReuseIdentifier: SearchResultSubtitleTableViewCell.identifier)
+        tableView.register(
+            SearchResultSubtitleTableViewCell.self,
+            forCellReuseIdentifier: SearchResultSubtitleTableViewCell.identifier
+        )
         tableView.isHidden = true
         return tableView
     }()
@@ -35,7 +38,11 @@ class LibraryPlaylistsViewController: UIViewController {
         fetchPlaylists()
         
         if selectionHandler != nil {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(didTapClose))
+            navigationItem.leftBarButtonItem = UIBarButtonItem(
+                barButtonSystemItem: .close,
+                target: self,
+                action: #selector(didTapClose)
+            )
         }
     }
     
@@ -47,7 +54,11 @@ class LibraryPlaylistsViewController: UIViewController {
     }
     
     public func showCreatePlaylistAlert() {
-        let alert = UIAlertController(title: "New Playlists", message: "Enter playlist name.", preferredStyle: .alert)
+        let alert = UIAlertController(
+            title: "New Playlists",
+            message: "Enter playlist name.",
+            preferredStyle: .alert
+        )
         alert.addTextField { textField in
             textField.placeholder = "Playlist name..."
         }
@@ -139,12 +150,20 @@ extension LibraryPlaylistsViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultSubtitleTableViewCell.identifier) as? SearchResultSubtitleTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: SearchResultSubtitleTableViewCell.identifier
+        ) as? SearchResultSubtitleTableViewCell else {
             return UITableViewCell()
         }
         
         let playlist = playlists[indexPath.row]
-        cell.configure(with: SearchResultSubtitleTableViewCellViewModel(title: playlist.name, subtitle: playlist.owner.displayName, imageURL: URL(string: playlist.images.first?.url ?? "")))
+        cell.configure(
+            with: SearchResultSubtitleTableViewCellViewModel(
+                title: playlist.name,
+                subtitle: playlist.owner.displayName,
+                imageURL: URL(string: playlist.images.first?.url ?? "")
+            )
+        )
         
         return cell
     }

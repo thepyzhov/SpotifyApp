@@ -24,8 +24,14 @@ class SearchResultsViewController: UIViewController {
     
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
-        tableView.register(SearchResultDefaultTableViewCell.self, forCellReuseIdentifier: SearchResultDefaultTableViewCell.identifier)
-        tableView.register(SearchResultSubtitleTableViewCell.self, forCellReuseIdentifier: SearchResultSubtitleTableViewCell.identifier)
+        tableView.register(
+            SearchResultDefaultTableViewCell.self,
+            forCellReuseIdentifier: SearchResultDefaultTableViewCell.identifier
+        )
+        tableView.register(
+            SearchResultSubtitleTableViewCell.self,
+            forCellReuseIdentifier: SearchResultSubtitleTableViewCell.identifier
+        )
         tableView.isHidden = true
         return tableView
     }()
@@ -95,7 +101,11 @@ extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegat
                 for: indexPath) as? SearchResultSubtitleTableViewCell else {
                 return UITableViewCell()
             }
-            let viewModel = SearchResultSubtitleTableViewCellViewModel(title: album.name, subtitle: album.artists.first?.name ?? "", imageURL: URL(string: album.images.first?.url ?? ""))
+            let viewModel = SearchResultSubtitleTableViewCellViewModel(
+                title: album.name,
+                subtitle: album.artists.first?.name ?? "",
+                imageURL: URL(string: album.images.first?.url ?? "")
+            )
             cell.configure(with: viewModel)
             return cell
         case .artist(let artist):
@@ -104,7 +114,10 @@ extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegat
                 for: indexPath) as? SearchResultDefaultTableViewCell else {
                 return UITableViewCell()
             }
-            let viewModel = SearchResultDefaultTableViewCellViewModel(title: artist.name, imageURL: URL(string: artist.images?.first?.url ?? ""))
+            let viewModel = SearchResultDefaultTableViewCellViewModel(
+                title: artist.name,
+                imageURL: URL(string: artist.images?.first?.url ?? "")
+            )
             cell.configure(with: viewModel)
             return cell
         case .playlist(let playlist):
@@ -113,7 +126,11 @@ extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegat
                 for: indexPath) as? SearchResultSubtitleTableViewCell else {
                 return UITableViewCell()
             }
-            let viewModel = SearchResultSubtitleTableViewCellViewModel(title: playlist.name, subtitle: playlist.owner.displayName, imageURL: URL(string: playlist.images.first?.url ?? ""))
+            let viewModel = SearchResultSubtitleTableViewCellViewModel(
+                title: playlist.name,
+                subtitle: playlist.owner.displayName,
+                imageURL: URL(string: playlist.images.first?.url ?? "")
+            )
             cell.configure(with: viewModel)
             return cell
         case .track(let track):
@@ -122,7 +139,11 @@ extension SearchResultsViewController: UITableViewDataSource, UITableViewDelegat
                 for: indexPath) as? SearchResultSubtitleTableViewCell else {
                 return UITableViewCell()
             }
-            let viewModel = SearchResultSubtitleTableViewCellViewModel(title: track.name, subtitle: track.artists.first?.name ?? "", imageURL: URL(string: track.album?.images.first?.url ?? ""))
+            let viewModel = SearchResultSubtitleTableViewCellViewModel(
+                title: track.name,
+                subtitle: track.artists.first?.name ?? "",
+                imageURL: URL(string: track.album?.images.first?.url ?? "")
+            )
             cell.configure(with: viewModel)
             return cell
         }

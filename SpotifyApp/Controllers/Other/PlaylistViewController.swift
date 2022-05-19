@@ -8,7 +8,9 @@
 import UIKit
 
 private enum Constants {
-    static let sectionItemEdgeInsets = NSDirectionalEdgeInsets(top: 1, leading: 2, bottom: 1, trailing: 2)
+    static let sectionItemEdgeInsets = NSDirectionalEdgeInsets(
+        top: 1, leading: 2, bottom: 1, trailing: 2
+    )
 }
 
 class PlaylistViewController: UIViewController {
@@ -17,29 +19,41 @@ class PlaylistViewController: UIViewController {
     
     private let playlist: Playlist
     
-    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewCompositionalLayout(sectionProvider: { _, _ -> NSCollectionLayoutSection? in
-        let item = NSCollectionLayoutItem(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0)
-            )
+    private let collectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: UICollectionViewCompositionalLayout(
+            sectionProvider: { _, _ -> NSCollectionLayoutSection? in
+                let item = NSCollectionLayoutItem(
+                    layoutSize: NSCollectionLayoutSize(
+                        widthDimension: .fractionalWidth(1.0),
+                        heightDimension: .fractionalHeight(1.0)
+                    )
+                )
+                item.contentInsets = Constants.sectionItemEdgeInsets
+                
+                let group = NSCollectionLayoutGroup.vertical(
+                    layoutSize: NSCollectionLayoutSize(
+                        widthDimension: .fractionalWidth(1.0),
+                        heightDimension: .absolute(60)
+                    ),
+                    subitem: item,
+                    count: 1)
+                
+                let section = NSCollectionLayoutSection(group: group)
+                section.boundarySupplementaryItems = [
+                    NSCollectionLayoutBoundarySupplementaryItem(
+                        layoutSize: NSCollectionLayoutSize(
+                            widthDimension: .fractionalWidth(1),
+                            heightDimension: .fractionalWidth(1)
+                        ),
+                        elementKind: UICollectionView.elementKindSectionHeader,
+                        alignment: .top
+                    )
+                ]
+                return section
+            }
         )
-        item.contentInsets = Constants.sectionItemEdgeInsets
-        
-        let group = NSCollectionLayoutGroup.vertical(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .absolute(60)
-            ),
-            subitem: item,
-            count: 1)
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.boundarySupplementaryItems = [
-            NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(1)), elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-        ]
-        return section
-    }))
+    )
     
     private var viewModels = [RecommendedTrackCellViewModel]()
     private var tracks = [AudioTrack]()
@@ -61,10 +75,15 @@ class PlaylistViewController: UIViewController {
         
         view.addSubview(collectionView)
         
-        collectionView.register(RecommendedTrackCollectionViewCell.self, forCellWithReuseIdentifier: RecommendedTrackCollectionViewCell.identifier)
-        collectionView.register(PlaylistHeaderCollectionReusableView.self,
-                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                                withReuseIdentifier: PlaylistHeaderCollectionReusableView.identifier)
+        collectionView.register(
+            RecommendedTrackCollectionViewCell.self,
+            forCellWithReuseIdentifier: RecommendedTrackCollectionViewCell.identifier
+        )
+        collectionView.register(
+            PlaylistHeaderCollectionReusableView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: PlaylistHeaderCollectionReusableView.identifier
+        )
         collectionView.backgroundColor = .systemBackground
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -110,7 +129,10 @@ class PlaylistViewController: UIViewController {
         guard let url = URL(string: playlist.externalUrls["spotify"] ?? "") else {
             return
         }
-        let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: [])
+        let activityViewController = UIActivityViewController(
+            activityItems: [url],
+            applicationActivities: []
+        )
         activityViewController.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(activityViewController, animated: true)
     }
@@ -132,23 +154,28 @@ class PlaylistViewController: UIViewController {
             preferredStyle: .actionSheet
         )
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        actionSheet.addAction(UIAlertAction(
-            title: "Remove",
-            style: .destructive,
-            handler: { [weak self] _ in
-                guard let self = self else { return }
-                APICaller.shared.removeTrackFromPlaylist(track: trackToDelete, playlist: self.playlist) { success in
-                    DispatchQueue.main.async {
-                        if success {
-                            self.tracks.remove(at: indexPath.row)
-                            self.viewModels.remove(at: indexPath.row)
-                            self.collectionView.reloadData()
-                        } else {
-                            print("Failed to remove.")
+        actionSheet.addAction(
+            UIAlertAction(
+                title: "Remove",
+                style: .destructive,
+                handler: { [weak self] _ in
+                    guard let self = self else { return }
+                    APICaller.shared.removeTrackFromPlaylist(
+                        track: trackToDelete,
+                        playlist: self.playlist
+                    ) { success in
+                        DispatchQueue.main.async {
+                            if success {
+                                self.tracks.remove(at: indexPath.row)
+                                self.viewModels.remove(at: indexPath.row)
+                                self.collectionView.reloadData()
+                            } else {
+                                print("Failed to remove.")
+                            }
                         }
                     }
                 }
-            })
+            )
         )
         
         present(actionSheet, animated: true)
@@ -167,7 +194,10 @@ extension PlaylistViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecommendedTrackCollectionViewCell.identifier, for: indexPath) as? RecommendedTrackCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: RecommendedTrackCollectionViewCell.identifier,
+            for: indexPath
+        ) as? RecommendedTrackCollectionViewCell else {
             return UICollectionViewCell()
         }
         
@@ -176,16 +206,19 @@ extension PlaylistViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                           withReuseIdentifier: PlaylistHeaderCollectionReusableView.identifier,
-                                                                           for: indexPath) as? PlaylistHeaderCollectionReusableView,
+        guard let header = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: PlaylistHeaderCollectionReusableView.identifier,
+            for: indexPath) as? PlaylistHeaderCollectionReusableView,
               kind == UICollectionView.elementKindSectionHeader else {
             return UICollectionReusableView()
         }
-        let headerViewModel = PlaylistHeaderViewViewModel(name: playlist.name,
-                                                          ownerName: playlist.owner.displayName,
-                                                          description: playlist.description,
-                                                          artworkURL: URL(string: playlist.images.first?.url ?? ""))
+        let headerViewModel = PlaylistHeaderViewViewModel(
+            name: playlist.name,
+            ownerName: playlist.owner.displayName,
+            description: playlist.description,
+            artworkURL: URL(string: playlist.images.first?.url ?? "")
+        )
         header.configure(with: headerViewModel)
         header.delegate = self
         return header

@@ -24,7 +24,10 @@ class LibraryAlbumsViewController: UIViewController {
     
     private let tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(SearchResultSubtitleTableViewCell.self, forCellReuseIdentifier: SearchResultSubtitleTableViewCell.identifier)
+        tableView.register(
+            SearchResultSubtitleTableViewCell.self,
+            forCellReuseIdentifier: SearchResultSubtitleTableViewCell.identifier
+        )
         tableView.isHidden = true
         return tableView
     }()
@@ -123,7 +126,9 @@ extension LibraryAlbumsViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultSubtitleTableViewCell.identifier) as? SearchResultSubtitleTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: SearchResultSubtitleTableViewCell.identifier
+        ) as? SearchResultSubtitleTableViewCell else {
             return UITableViewCell()
         }
         

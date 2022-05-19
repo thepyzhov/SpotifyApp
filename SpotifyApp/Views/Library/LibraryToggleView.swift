@@ -14,10 +14,25 @@ protocol LibraryToggleViewDelegate: AnyObject {
 
 private enum Constants {
     static let playlistButtonFrame = CGRect(x: 0, y: 0, width: 100, height: 40)
-    static let albumsButtonFrame = CGRect(x: playlistButtonFrame.origin.x + playlistButtonFrame.size.width, y: 0, width: 100, height: 40)
+    static let albumsButtonFrame = CGRect(
+        x: playlistButtonFrame.origin.x + playlistButtonFrame.size.width,
+        y: 0,
+        width: 100,
+        height: 40
+    )
     
-    static let playlistIndicatorViewFrame = CGRect(x: 0, y: playlistButtonFrame.origin.y + playlistButtonFrame.size.height, width: 100, height: 3)
-    static let albumIndicatorViewFrame = CGRect(x: 100, y: playlistButtonFrame.origin.y + playlistButtonFrame.size.height, width: 100, height: 3)
+    static let playlistIndicatorViewFrame = CGRect(
+        x: 0,
+        y: playlistButtonFrame.origin.y + playlistButtonFrame.size.height,
+        width: 100,
+        height: 3
+    )
+    static let albumIndicatorViewFrame = CGRect(
+        x: 100,
+        y: playlistButtonFrame.origin.y + playlistButtonFrame.size.height,
+        width: 100,
+        height: 3
+    )
 }
 
 class LibraryToggleView: UIView {

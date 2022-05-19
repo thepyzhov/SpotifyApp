@@ -8,8 +8,12 @@
 import UIKit
 
 private enum Constants {
-    static let collectionViewItemEdgeInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
-    static let collectionViewGroupEdgeInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+    static let collectionViewItemEdgeInsets = NSDirectionalEdgeInsets(
+        top: 5, leading: 5, bottom: 5, trailing: 5
+    )
+    static let collectionViewGroupEdgeInsets = NSDirectionalEdgeInsets(
+        top: 5, leading: 5, bottom: 5, trailing: 5
+    )
 }
 
 class CategoryViewController: UIViewController {
@@ -18,10 +22,18 @@ class CategoryViewController: UIViewController {
     private let collectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: UICollectionViewCompositionalLayout(sectionProvider: { _, _ -> NSCollectionLayoutSection in
-            let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1)))
+            let item = NSCollectionLayoutItem(
+                layoutSize: NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1),
+                    heightDimension: .fractionalHeight(1)
+                )
+            )
             item.contentInsets = Constants.collectionViewItemEdgeInsets
             let group = NSCollectionLayoutGroup.horizontal(
-                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(250)),
+                layoutSize: NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1),
+                    heightDimension: .absolute(250)
+                ),
                 subitem: item,
                 count: 2)
             group.contentInsets = Constants.collectionViewGroupEdgeInsets
@@ -49,7 +61,10 @@ class CategoryViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         collectionView.backgroundColor = .systemBackground
-        collectionView.register(FeaturedPlaylistCollectionViewCell.self, forCellWithReuseIdentifier: FeaturedPlaylistCollectionViewCell.identifier)
+        collectionView.register(
+            FeaturedPlaylistCollectionViewCell.self,
+            forCellWithReuseIdentifier: FeaturedPlaylistCollectionViewCell.identifier
+        )
         collectionView.dataSource = self
         collectionView.delegate = self
         
@@ -83,13 +98,19 @@ extension CategoryViewController: UICollectionViewDataSource, UICollectionViewDe
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FeaturedPlaylistCollectionViewCell.identifier, for: indexPath) as? FeaturedPlaylistCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: FeaturedPlaylistCollectionViewCell.identifier,
+            for: indexPath
+        ) as? FeaturedPlaylistCollectionViewCell else {
             return UICollectionViewCell()
         }
         let playlist = playlists[indexPath.row]
-        cell.configure(with: FeaturedPlaylistCellViewModel(name: playlist.name,
-                                                           artworkURL: URL(string: playlist.images.first?.url ?? ""),
-                                                           creatorName: playlist.owner.displayName)
+        cell.configure(
+            with: FeaturedPlaylistCellViewModel(
+                name: playlist.name,
+                artworkURL: URL(string: playlist.images.first?.url ?? ""),
+                creatorName: playlist.owner.displayName
+            )
         )
         return cell
     }

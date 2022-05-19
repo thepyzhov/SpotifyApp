@@ -54,7 +54,10 @@ final class PlaybackPresenter {
         playerViewController.dataSource = self
         playerViewController.delegate = self
         playerViewController.title = track.name
-        viewController.present(UINavigationController(rootViewController: playerViewController), animated: true) { [weak self] in
+        viewController.present(UINavigationController(
+            rootViewController: playerViewController),
+                               animated: true
+        ) { [weak self] in
             self?.player?.play()
         }
         self.playerViewController = playerViewController
@@ -76,7 +79,10 @@ final class PlaybackPresenter {
         let playerViewController = PlayerViewController()
         playerViewController.dataSource = self
         playerViewController.delegate = self
-        viewController.present(UINavigationController(rootViewController: playerViewController), animated: true)
+        viewController.present(UINavigationController(
+            rootViewController: playerViewController),
+                               animated: true
+        )
         self.playerViewController = playerViewController
     }
 }

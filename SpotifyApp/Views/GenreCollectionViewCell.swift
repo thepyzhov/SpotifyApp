@@ -11,7 +11,10 @@ import SDWebImage
 private enum Constants {
     static let contentViewCornerRadius: CGFloat = 8
     static let labelFont = UIFont.systemFont(ofSize: 22, weight: .semibold)
-    static let defaultImage = UIImage(systemName: "music.note.list", withConfiguration: UIImage.SymbolConfiguration(pointSize: 50, weight: .regular))
+    static let defaultImage = UIImage(
+        systemName: "music.note.list",
+        withConfiguration: UIImage.SymbolConfiguration(pointSize: 50, weight: .regular)
+    )
 }
 
 class CategoryCollectionViewCell: UICollectionViewCell {
@@ -66,7 +69,12 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        label.frame = CGRect(x: 10, y: contentView.height / 2, width: contentView.width - 20, height: contentView.height / 2)
+        label.frame = CGRect(
+            x: 10,
+            y: contentView.height / 2,
+            width: contentView.width - 20,
+            height: contentView.height / 2
+        )
         imageView.frame = contentView.bounds
         imageView.contentMode = .scaleAspectFill
     }

@@ -40,8 +40,15 @@ class PlayerViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        imageView.frame = CGRect(x: 0, y: view.safeAreaInsets.top, width: view.width, height: view.width)
-        controlsView.frame = CGRect(x: 10, y: imageView.bottom + 10, width: view.width - 20, height: view.height - imageView.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom - 15)
+        imageView.frame = CGRect(
+            x: 0, y: view.safeAreaInsets.top, width: view.width, height: view.width
+        )
+        controlsView.frame = CGRect(
+            x: 10,
+            y: imageView.bottom + 10,
+            width: view.width - 20,
+            height: view.height - imageView.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom - 15
+        )
     }
     
     func refreshUI() {
@@ -49,13 +56,26 @@ class PlayerViewController: UIViewController {
     }
     
     private func configureBarButtons() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(didTapClose))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(didTapAction))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .close,
+            target: self,
+            action: #selector(didTapClose)
+        )
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .action,
+            target: self,
+            action: #selector(didTapAction)
+        )
     }
     
     private func configure() {
         imageView.sd_setImage(with: dataSource?.imageURL)
-        controlsView.configure(with: PlayerControlsViewViewModel(title: dataSource?.songName, subtitle: dataSource?.subtitle))
+        controlsView.configure(
+            with: PlayerControlsViewViewModel(
+                title: dataSource?.songName,
+                subtitle: dataSource?.subtitle
+            )
+        )
     }
     
     // MARK: - BarButtons Selectors

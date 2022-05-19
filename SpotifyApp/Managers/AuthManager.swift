@@ -35,7 +35,6 @@ final class AuthManager {
             do {
                 verifierString = try CryptoManager.shared.generateVerifier()
             } catch {
-                //Logger().log(<#T##os.OSLogMessage#>) // "Error while generating Verifier"
                 return "none"
             }
         }

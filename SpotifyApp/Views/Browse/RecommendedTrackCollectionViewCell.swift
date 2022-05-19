@@ -64,9 +64,24 @@ class RecommendedTrackCollectionViewCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        albumCoverImageView.frame = CGRect(x: Constants.albumCoverImageViewXPadding, y: Constants.albumCoverImageViewYPadding, width: contentView.height - Constants.albumCoverImageViewHeightPadding, height: contentView.height - Constants.albumCoverImageViewWidthPadding)
-        trackNameLabel.frame = CGRect(x: albumCoverImageView.right + Constants.nameLabelXPadding, y: 0, width: contentView.width - albumCoverImageView.right - Constants.nameLabelWidthPadding, height: contentView.height / 2)
-        artistNameLabel .frame = CGRect(x: albumCoverImageView.right + Constants.nameLabelXPadding, y: contentView.height / 2, width: contentView.width - albumCoverImageView.right - Constants.nameLabelWidthPadding, height: contentView.height / 2)
+        albumCoverImageView.frame = CGRect(
+            x: Constants.albumCoverImageViewXPadding,
+            y: Constants.albumCoverImageViewYPadding,
+            width: contentView.height - Constants.albumCoverImageViewHeightPadding,
+            height: contentView.height - Constants.albumCoverImageViewWidthPadding
+        )
+        trackNameLabel.frame = CGRect(
+            x: albumCoverImageView.right + Constants.nameLabelXPadding,
+            y: 0,
+            width: contentView.width - albumCoverImageView.right - Constants.nameLabelWidthPadding,
+            height: contentView.height / 2
+        )
+        artistNameLabel .frame = CGRect(
+            x: albumCoverImageView.right + Constants.nameLabelXPadding,
+            y: contentView.height / 2,
+            width: contentView.width - albumCoverImageView.right - Constants.nameLabelWidthPadding,
+            height: contentView.height / 2
+        )
     }
     
     override func prepareForReuse() {

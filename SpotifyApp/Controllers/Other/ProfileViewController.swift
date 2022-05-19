@@ -13,7 +13,10 @@ class ProfileViewController: UIViewController {
     private let tableView: UITableView = {
         let tableView = UITableView()
         tableView.isHidden = true
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(
+            UITableViewCell.self,
+            forCellReuseIdentifier: "cell"
+        )
         return tableView
     }()
     
@@ -67,10 +70,14 @@ class ProfileViewController: UIViewController {
             return
         }
         
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.width, height: view.width / 1.5))
+        let headerView = UIView(
+            frame: CGRect(x: 0, y: 0, width: view.width, height: view.width / 1.5)
+        )
         
         let imageSize: CGFloat = headerView.height / 2
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: imageSize, height: imageSize))
+        let imageView = UIImageView(frame: CGRect(
+            x: 0, y: 0, width: imageSize, height: imageSize)
+        )
         headerView.addSubview(imageView)
         imageView.center = headerView.center
         imageView.contentMode = .scaleAspectFill

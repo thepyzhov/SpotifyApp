@@ -62,7 +62,13 @@ final class PlaylistHeaderCollectionReusableView: UICollectionReusableView {
     private let playAllButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .systemGreen
-        let image = UIImage(systemName: "play.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: Constants.playAllButtonSymbolPointSize, weight: .regular))
+        let image = UIImage(
+            systemName: "play.fill",
+            withConfiguration: UIImage.SymbolConfiguration(
+                pointSize: Constants.playAllButtonSymbolPointSize,
+                weight: .regular
+            )
+        )
         button.setImage(image, for: .normal)
         button.tintColor = .white
         button.layer.masksToBounds = true
@@ -91,20 +97,48 @@ final class PlaylistHeaderCollectionReusableView: UICollectionReusableView {
         super.layoutSubviews()
         
         let playlistImageSize: CGFloat = height / 1.8
-        playlistImageView.frame = CGRect(x: (width - playlistImageSize) / 2, y: 20, width: playlistImageSize, height: playlistImageSize)
+        playlistImageView.frame = CGRect(
+            x: (width - playlistImageSize) / 2,
+            y: 20,
+            width: playlistImageSize,
+            height: playlistImageSize
+        )
         
-        nameLabel.frame = CGRect(x: Constants.labelPositionX, y: playlistImageView.bottom, width: width - Constants.labelWidthPadding, height: Constants.labelHeight)
-        descriptionLabel.frame = CGRect(x: Constants.labelPositionX, y: nameLabel.bottom, width: width - Constants.labelWidthPadding, height: Constants.labelHeight)
-        ownerLabel.frame = CGRect(x: Constants.labelPositionX, y: descriptionLabel.bottom, width: width - Constants.labelWidthPadding, height: Constants.labelHeight)
+        nameLabel.frame = CGRect(
+            x: Constants.labelPositionX,
+            y: playlistImageView.bottom,
+            width: width - Constants.labelWidthPadding,
+            height: Constants.labelHeight
+        )
+        descriptionLabel.frame = CGRect(
+            x: Constants.labelPositionX,
+            y: nameLabel.bottom,
+            width: width - Constants.labelWidthPadding,
+            height: Constants.labelHeight
+        )
+        ownerLabel.frame = CGRect(
+            x: Constants.labelPositionX,
+            y: descriptionLabel.bottom,
+            width: width - Constants.labelWidthPadding,
+            height: Constants.labelHeight
+        )
         
-        playAllButton.frame = CGRect(x: width - Constants.playAllButtonPadding, y: height - Constants.playAllButtonPadding, width: Constants.playAllButtonSize, height: Constants.playAllButtonSize)
+        playAllButton.frame = CGRect(
+            x: width - Constants.playAllButtonPadding,
+            y: height - Constants.playAllButtonPadding,
+            width: Constants.playAllButtonSize,
+            height: Constants.playAllButtonSize
+        )
     }
     
     func configure(with viewModel: PlaylistHeaderViewViewModel) {
         nameLabel.text = viewModel.name
         ownerLabel.text = viewModel.ownerName
         descriptionLabel.text = viewModel.description
-        playlistImageView.sd_setImage(with: viewModel.artworkURL, placeholderImage: UIImage(systemName: "photo"))
+        playlistImageView.sd_setImage(
+            with: viewModel.artworkURL,
+            placeholderImage: UIImage(systemName: "photo")
+        )
     }
     
     @objc private func didTapPlayAll() {

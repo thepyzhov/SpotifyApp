@@ -25,10 +25,12 @@ enum HomeSectionType {
 }
 
 private enum Constants {
-    static let sectionItemEdgeInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
+    static let sectionItemEdgeInsets = NSDirectionalEdgeInsets(
+        top: 2, leading: 2, bottom: 2, trailing: 2
+    )
 }
 
-class HomeViewController: UIViewController {
+final class HomeViewController: UIViewController {
     
     private var newAlbums: [Album] = []
     private var playlists: [Playlist] = []
@@ -36,7 +38,8 @@ class HomeViewController: UIViewController {
 
     private var collectionView: UICollectionView = UICollectionView(
         frame: .zero,
-        collectionViewLayout: UICollectionViewCompositionalLayout { sectionIndex, _ -> NSCollectionLayoutSection? in
+        collectionViewLayout:
+            UICollectionViewCompositionalLayout { sectionIndex, _ -> NSCollectionLayoutSection? in
             return HomeViewController.createSectionLayout(section: sectionIndex)
         }
     )
@@ -55,7 +58,12 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         title = "Browse"
         view.backgroundColor = .systemBackground
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gear"), style: .done, target: self, action: #selector(didTapSettings))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "gear"),
+            style: .done,
+            target: self,
+            action: #selector(didTapSettings)
+        )
         
         configureCollectionView()
         view.addSubview(spinner)
@@ -166,10 +174,18 @@ class HomeViewController: UIViewController {
             )
         })))
         sections.append(.featuredPlaylists(viewModels: playlists.compactMap({
-            return FeaturedPlaylistCellViewModel(name: $0.name, artworkURL: URL(string: $0.images.first?.url ?? ""), creatorName: $0.owner.displayName)
+            return FeaturedPlaylistCellViewModel(
+                name: $0.name,
+                artworkURL: URL(string: $0.images.first?.url ?? ""),
+                creatorName: $0.owner.displayName
+            )
         })))
         sections.append(.recommendedTracks(viewModels: tracks.compactMap({
-            return RecommendedTrackCellViewModel(name: $0.name, artistName: $0.artists.first?.name ?? "-", artworkURL: URL(string: $0.album?.images.first?.url ?? ""))
+            return RecommendedTrackCellViewModel(
+                name: $0.name,
+                artistName: $0.artists.first?.name ?? "-",
+                artworkURL: URL(string: $0.album?.images.first?.url ?? "")
+            )
         })))
         
         collectionView.reloadData()
@@ -177,12 +193,23 @@ class HomeViewController: UIViewController {
     
     private func configureCollectionView() {
         view.addSubview(collectionView)
-        collectionView.register(NewReleaseCollectionViewCell.self, forCellWithReuseIdentifier: NewReleaseCollectionViewCell.identifier)
-        collectionView.register(FeaturedPlaylistCollectionViewCell.self, forCellWithReuseIdentifier: FeaturedPlaylistCollectionViewCell.identifier)
-        collectionView.register(RecommendedTrackCollectionViewCell.self, forCellWithReuseIdentifier: RecommendedTrackCollectionViewCell.identifier)
-        collectionView.register(TitleHeaderCollectionReusableView.self,
-                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                                withReuseIdentifier: TitleHeaderCollectionReusableView.identifier)
+        collectionView.register(
+            NewReleaseCollectionViewCell.self,
+            forCellWithReuseIdentifier: NewReleaseCollectionViewCell.identifier
+        )
+        collectionView.register(
+            FeaturedPlaylistCollectionViewCell.self,
+            forCellWithReuseIdentifier: FeaturedPlaylistCollectionViewCell.identifier
+        )
+        collectionView.register(
+            RecommendedTrackCollectionViewCell.self,
+            forCellWithReuseIdentifier: RecommendedTrackCollectionViewCell.identifier
+        )
+        collectionView.register(
+            TitleHeaderCollectionReusableView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: TitleHeaderCollectionReusableView.identifier
+        )
         
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -190,7 +217,10 @@ class HomeViewController: UIViewController {
     }
     
     private func addLongTapGesture() {
-        let gesture = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress))
+        let gesture = UILongPressGestureRecognizer(
+            target: self,
+            action: #selector(didLongPress)
+        )
         collectionView.isUserInteractionEnabled = true
         collectionView.addGestureRecognizer(gesture)
     }
@@ -329,18 +359,28 @@ class HomeViewController: UIViewController {
             message: "Would you like to add this to a playlist?",
             preferredStyle: .actionSheet
         )
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        actionSheet.addAction(UIAlertAction(title: "Add to playlist", style: .default, handler: { [weak self] _ in
-            DispatchQueue.main.async {
-                let libraryPlaylistViewController = LibraryPlaylistsViewController()
-                libraryPlaylistViewController.selectionHandler = { playlist in
-                    APICaller.shared.addTrackToPlaylist(track: model, playlist: playlist) { success in
+        actionSheet.addAction(UIAlertAction(
+            title: "Cancel",
+            style: .cancel)
+        )
+        actionSheet.addAction(UIAlertAction(
+            title: "Add to playlist",
+            style: .default,
+            handler: { [weak self] _ in
+                DispatchQueue.main.async {
+                    let libraryPlaylistViewController = LibraryPlaylistsViewController()
+                    libraryPlaylistViewController.selectionHandler = { playlist in
+                        APICaller.shared.addTrackToPlaylist(track: model, playlist: playlist) { success in
+                        }
                     }
+                    libraryPlaylistViewController.title = "Select Playlist"
+                    self?.present(UINavigationController(
+                        rootViewController: libraryPlaylistViewController),
+                                  animated: true
+                    )
                 }
-                libraryPlaylistViewController.title = "Select Playlist"
-                self?.present(UINavigationController(rootViewController: libraryPlaylistViewController), animated: true)
-            }
-        }))
+            })
+        )
         
         present(actionSheet, animated: true)
     }

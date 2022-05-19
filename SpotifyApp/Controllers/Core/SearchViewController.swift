@@ -9,14 +9,20 @@ import UIKit
 import SafariServices
 
 private enum Constants {
-    static let collectionViewItemEdgeInsets = NSDirectionalEdgeInsets(top: 2, leading: 7, bottom: 2, trailing: 7)
-    static let collectionViewGroupEdgeInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0)
+    static let collectionViewItemEdgeInsets = NSDirectionalEdgeInsets(
+        top: 2, leading: 7, bottom: 2, trailing: 7
+    )
+    static let collectionViewGroupEdgeInsets = NSDirectionalEdgeInsets(
+        top: 10, leading: 0, bottom: 10, trailing: 0
+    )
 }
 
-class SearchViewController: UIViewController {
+final class SearchViewController: UIViewController {
     
     let searchController: UISearchController = {
-        let searchController = UISearchController(searchResultsController: SearchResultsViewController())
+        let searchController = UISearchController(
+            searchResultsController: SearchResultsViewController()
+        )
         searchController.searchBar.placeholder = "Artists, songs, or podcasts"
         searchController.searchBar.searchBarStyle = .minimal
         searchController.definesPresentationContext = true
@@ -25,13 +31,28 @@ class SearchViewController: UIViewController {
     
     private let collectionView: UICollectionView = UICollectionView(
         frame: .zero,
-        collectionViewLayout: UICollectionViewCompositionalLayout(sectionProvider: { _, _ -> NSCollectionLayoutSection in
-            let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
-            item.contentInsets = Constants.collectionViewItemEdgeInsets
-            let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(150)), subitem: item, count: 2)
-            group.contentInsets = Constants.collectionViewGroupEdgeInsets
-            return NSCollectionLayoutSection(group: group)
-    }))
+        collectionViewLayout: UICollectionViewCompositionalLayout(
+            sectionProvider: { _, _ -> NSCollectionLayoutSection in
+                let item = NSCollectionLayoutItem(
+                    layoutSize: NSCollectionLayoutSize(
+                        widthDimension: .fractionalWidth(1.0),
+                        heightDimension: .fractionalHeight(1.0)
+                    )
+                )
+                item.contentInsets = Constants.collectionViewItemEdgeInsets
+                let group = NSCollectionLayoutGroup.horizontal(
+                    layoutSize: NSCollectionLayoutSize(
+                        widthDimension: .fractionalWidth(1.0),
+                        heightDimension: .absolute(150)
+                    ),
+                    subitem: item,
+                    count: 2
+                )
+                group.contentInsets = Constants.collectionViewGroupEdgeInsets
+                return NSCollectionLayoutSection(group: group)
+            }
+        )
+    )
     
     private var categories = [Category]()
 
@@ -44,7 +65,10 @@ class SearchViewController: UIViewController {
         navigationItem.searchController = searchController
         
         view.addSubview(collectionView)
-        collectionView.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: CategoryCollectionViewCell.identifier)
+        collectionView.register(
+            CategoryCollectionViewCell.self,
+            forCellWithReuseIdentifier: CategoryCollectionViewCell.identifier
+        )
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = .systemBackground
@@ -114,11 +138,19 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCollectionViewCell.identifier, for: indexPath) as? CategoryCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: CategoryCollectionViewCell.identifier,
+            for: indexPath
+        ) as? CategoryCollectionViewCell else {
             return UICollectionViewCell()
         }
         let category = categories[indexPath.row]
-        cell.configure(with: CategoryCollectionViewCellViewModel(title: category.name, artworkURL: URL(string: category.icons.first?.url ?? "")))
+        cell.configure(
+            with: CategoryCollectionViewCellViewModel(
+                title: category.name,
+                artworkURL: URL(string: category.icons.first?.url ?? "")
+            )
+        )
         return cell
     }
     

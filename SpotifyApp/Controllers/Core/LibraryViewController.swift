@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LibraryViewController: UIViewController {
+final class LibraryViewController: UIViewController {
 
     private let playlistsViewController = LibraryPlaylistsViewController()
     private let albumsViewController = LibraryAlbumsViewController()
@@ -29,33 +29,60 @@ class LibraryViewController: UIViewController {
         scrollView.delegate = self
         view.addSubview(scrollView)
         
-        scrollView.contentSize = CGSize(width: view.width * 2, height: scrollView.height)
+        scrollView.contentSize = CGSize(
+            width: view.width * 2,
+            height: scrollView.height
+        )
         addChildren()
         updateBarButtons()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        scrollView.frame = CGRect(x: 0, y: view.safeAreaInsets.top + 55, width: view.width, height: view.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom - 55)
-        toggleView.frame = CGRect(x: 0, y: view.safeAreaInsets.top, width: 200, height: 55)
+        scrollView.frame = CGRect(
+            x: 0,
+            y: view.safeAreaInsets.top + 55,
+            width: view.width,
+            height: view.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom - 55
+        )
+        toggleView.frame = CGRect(
+            x: 0,
+            y: view.safeAreaInsets.top,
+            width: 200,
+            height: 55
+        )
     }
     
     private func addChildren() {
         addChild(playlistsViewController)
         scrollView.addSubview(playlistsViewController.view)
-        playlistsViewController.view.frame = CGRect(x: 0, y: 0, width: scrollView.width, height: scrollView.height)
+        playlistsViewController.view.frame = CGRect(
+            x: 0,
+            y: 0,
+            width: scrollView.width,
+            height: scrollView.height
+        )
         playlistsViewController.didMove(toParent: self)
         
         addChild(albumsViewController)
         scrollView.addSubview(albumsViewController.view)
-        albumsViewController.view.frame = CGRect(x: view.width, y: 0, width: scrollView.width, height: scrollView.height)
+        albumsViewController.view.frame = CGRect(
+            x: view.width,
+            y: 0,
+            width: scrollView.width,
+            height: scrollView.height
+        )
         albumsViewController.didMove(toParent: self)
     }
     
     private func updateBarButtons() {
         switch toggleView.state {
         case .playlist:
-            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapAdd))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(
+                barButtonSystemItem: .add,
+                target: self,
+                action: #selector(didTapAdd)
+            )
         case .album:
             navigationItem.rightBarButtonItem = nil
         }

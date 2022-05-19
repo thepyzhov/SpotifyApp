@@ -27,10 +27,22 @@ private enum Constants {
     static let backwardButtonSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 34, weight: .regular)
     static let forwardButtonSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 34, weight: .regular)
     
-    static let playButtonImage = UIImage(systemName: "play.circle.fill", withConfiguration: playButtonSymbolConfiguration)
-    static let pauseButtonImage = UIImage(systemName: "pause.circle.fill", withConfiguration: pauseButtonSymbolConfiguration)
-    static let backwardButtonImage = UIImage(systemName: "backward.fill", withConfiguration: backwardButtonSymbolConfiguration)
-    static let forwardButtonImage = UIImage(systemName: "forward.fill", withConfiguration: forwardButtonSymbolConfiguration)
+    static let playButtonImage = UIImage(
+        systemName: "play.circle.fill",
+        withConfiguration: playButtonSymbolConfiguration
+    )
+    static let pauseButtonImage = UIImage(
+        systemName: "pause.circle.fill",
+        withConfiguration: pauseButtonSymbolConfiguration
+    )
+    static let backwardButtonImage = UIImage(
+        systemName: "backward.fill",
+        withConfiguration: backwardButtonSymbolConfiguration
+    )
+    static let forwardButtonImage = UIImage(
+        systemName: "forward.fill",
+        withConfiguration: forwardButtonSymbolConfiguration
+    )
 }
 
 final class PlayerControlsView: UIView {
@@ -115,9 +127,24 @@ final class PlayerControlsView: UIView {
         
         volumeSlider.frame = CGRect(x: 10, y: subtitleLabel.bottom + 20, width: width - 20, height: 44)
         
-        playPauseButton.frame = CGRect(x: (width - Constants.buttonSize) / 2, y: volumeSlider.bottom + 30, width: Constants.buttonSize, height: Constants.buttonSize)
-        backButton.frame = CGRect(x: playPauseButton.left - Constants.backAndNextButtonsXPadding - Constants.buttonSize, y: playPauseButton.top, width: Constants.buttonSize, height: Constants.buttonSize)
-        nextButton.frame = CGRect(x: playPauseButton.right + Constants.backAndNextButtonsXPadding, y: playPauseButton.top, width: Constants.buttonSize, height: Constants.buttonSize)
+        playPauseButton.frame = CGRect(
+            x: (width - Constants.buttonSize) / 2,
+            y: volumeSlider.bottom + 30,
+            width: Constants.buttonSize,
+            height: Constants.buttonSize
+        )
+        backButton.frame = CGRect(
+            x: playPauseButton.left - Constants.backAndNextButtonsXPadding - Constants.buttonSize,
+            y: playPauseButton.top,
+            width: Constants.buttonSize,
+            height: Constants.buttonSize
+        )
+        nextButton.frame = CGRect(
+            x: playPauseButton.right + Constants.backAndNextButtonsXPadding,
+            y: playPauseButton.top,
+            width: Constants.buttonSize,
+            height: Constants.buttonSize
+        )
     }
     
     func configure(with viewModel: PlayerControlsViewViewModel) {
@@ -131,7 +158,10 @@ final class PlayerControlsView: UIView {
         self.isPlaying = !isPlaying
         delegate?.playerControlsViewDidTapPlayPauseButton(self)
         
-        playPauseButton.setImage(isPlaying ? Constants.pauseButtonImage : Constants.playButtonImage, for: .normal)
+        playPauseButton.setImage(
+            isPlaying ? Constants.pauseButtonImage : Constants.playButtonImage,
+            for: .normal
+        )
     }
     
     @objc private func didTapBack() {

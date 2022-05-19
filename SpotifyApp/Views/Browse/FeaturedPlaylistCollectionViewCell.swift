@@ -67,11 +67,25 @@ class FeaturedPlaylistCollectionViewCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        creatorNameLabel.frame = CGRect(x: Constants.nameLabelXPadding, y: contentView.height - Constants.nameLabelHeightPadding, width: contentView.width - Constants.nameLabelWidthPadding, height: Constants.creatorNameLabelHeight)
-        playlistNameLabel.frame = CGRect(x: Constants.nameLabelXPadding, y: contentView.height - Constants.nameLabelHeightPadding * 2, width: contentView.width - Constants.nameLabelWidthPadding, height: Constants.playlistNameLabelHeight)
+        creatorNameLabel.frame = CGRect(
+            x: Constants.nameLabelXPadding,
+            y: contentView.height - Constants.nameLabelHeightPadding,
+            width: contentView.width - Constants.nameLabelWidthPadding,
+            height: Constants.creatorNameLabelHeight
+        )
+        playlistNameLabel.frame = CGRect(
+            x: Constants.nameLabelXPadding,
+            y: contentView.height - Constants.nameLabelHeightPadding * 2,
+            width: contentView.width - Constants.nameLabelWidthPadding,
+            height: Constants.playlistNameLabelHeight
+        )
         
         let imageSize = contentView.height - Constants.imageSizePadding
-        playlistCoverImageView.frame = CGRect(x: (contentView.width - imageSize) / 2, y: Constants.playlistCoverImageViewYPadding, width: imageSize, height: imageSize)
+        playlistCoverImageView.frame = CGRect(
+            x: (contentView.width - imageSize) / 2,
+            y: Constants.playlistCoverImageViewYPadding,
+            width: imageSize,
+            height: imageSize)
     }
     
     override func prepareForReuse() {
