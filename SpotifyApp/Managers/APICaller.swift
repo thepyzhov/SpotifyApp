@@ -7,12 +7,25 @@
 
 import Foundation
 
-private enum Constants {
-    static let baseAPIURL = "https://api.spotify.com/v1"
+private enum BaseAPI {
+    static let url = "https://api.spotify.com/v1"
+    static let scheme = "https"
+    static let host = "api.spotify.com"
+    static let verison = "/v1"
     
     static let searchQueryType = "album,artist,playlist,track"
-    
     static let successCode: Int = 200
+    
+    static let HTTPHeaderFieldName = "Content-Type"
+    static let HTTPHeaderFieldValue = "application/json"
+}
+
+private enum APIQueryItems {
+    static let ids = "ids"
+    static let limit = "limit"
+    static let seedGenres = "seed_genres"
+    static let type = "type"
+    static let query = "q"
 }
 
 final class APICaller {
@@ -24,29 +37,29 @@ final class APICaller {
         return jsonDecoder
     }()
     
-    private init() {}
-    
-    enum APIError: Error {
+    private enum APIError: Error {
         case failedToGetData
     }
     
-    enum HTTPMethod: String {
+    private enum HTTPMethod: String {
         case DELETE
         case GET
         case POST
         case PUT
     }
     
+    private init() {}
+    
     // MARK: - Albums
     
     public func getAlbumDetails(for album: Album, completion: @escaping (Result<AlbumDetailsResponse, Error>) -> Void) {
-        createRequest(with: URL(string: Constants.baseAPIURL + "/albums/\(album.id)"), type: .GET) { [weak self] request in
+        createRequest(with: "/albums/\(album.id)") { [weak self] request in
             self?.makeRequest(with: request, for: AlbumDetailsResponse.self, completion: completion)
         }
     }
     
     public func getCurrentUserAlbums(completion: @escaping (Result<[Album], Error>) -> Void) {
-        createRequest(with: URL(string: Constants.baseAPIURL + "/me/albums"), type: .GET) { [weak self] request in
+        createRequest(with: "/me/albums") { [weak self] request in
             let task = URLSession.shared.dataTask(with: request) { data, _, error in
                 guard let data = data, error == nil, let self = self else {
                     completion(.failure(APIError.failedToGetData))
@@ -65,7 +78,11 @@ final class APICaller {
     }
     
     public func saveAlbum(album: Album, completion: @escaping (Bool) -> Void) {
-        createRequest(with: URL(string: Constants.baseAPIURL + "/me/albums?ids=\(album.id)"), type: .PUT) { request in
+        createRequest(
+            with: "/me/albums",
+            urlQuery: [URLQueryItem(name: "ids", value: String(album.id))],
+            type: .PUT
+        ) { request in
             let task = URLSession.shared.dataTask(with: request) { _, response, error in
                 guard let code = (response as? HTTPURLResponse)?.statusCode,
                       error == nil else {
@@ -73,7 +90,7 @@ final class APICaller {
                     return
                 }
                 
-                completion(code == Constants.successCode)
+                completion(code == BaseAPI.successCode)
             }
             task.resume()
         }
@@ -82,13 +99,16 @@ final class APICaller {
     // MARK: - Playlists
     
     public func getPlaylistDetails(for playlist: Playlist, completion: @escaping (Result<PlaylistDetailsResponse, Error>) -> Void) {
-        createRequest(with: URL(string: Constants.baseAPIURL + "/playlists/\(playlist.id)"), type: .GET) { [weak self] request in
+        createRequest(with: "/playlists/\(playlist.id)") { [weak self] request in
             self?.makeRequest(with: request, for: PlaylistDetailsResponse.self, completion: completion)
         }
     }
     
     public func getCurrentUserPlaylists(completion: @escaping (Result<[Playlist], Error>) -> Void) {
-        createRequest(with: URL(string: Constants.baseAPIURL + "/me/playlists?limit=50"), type: .GET) { [weak self] request in
+        createRequest(
+            with: "/me/playlists",
+            urlQuery: [URLQueryItem(name: APIQueryItems.limit, value: "50")]
+        ) { [weak self] request in
             let task = URLSession.shared.dataTask(with: request) { data, _, error in
                 guard let data = data, error == nil, let self = self else {
                     completion(.failure(APIError.failedToGetData))
@@ -111,8 +131,7 @@ final class APICaller {
         getCurrentUserProfile { [weak self] result in
             switch result {
             case .success(let profile):
-                let urlString = Constants.baseAPIURL + "/users/\(profile.id)/playlists"
-                self?.createRequest(with: URL(string: urlString), type: .POST) { baseRequest in
+                self?.createRequest(with: "/users/\(profile.id)/playlists", type: .POST) { baseRequest in
                     var request = baseRequest
                     let json = [
                         "name": name
@@ -150,7 +169,7 @@ final class APICaller {
         playlist: Playlist,
         completion: @escaping (Bool) -> Void
     ) {
-        createRequest(with: URL(string: Constants.baseAPIURL + "/playlists/\(playlist.id)/tracks"), type: .POST) { baseRequest in
+        createRequest(with: "/playlists/\(playlist.id)/tracks", type: .POST) { baseRequest in
             var request = baseRequest
             let json = [
                 "uris": [
@@ -158,7 +177,7 @@ final class APICaller {
                 ]
             ]
             request.httpBody = try? JSONSerialization.data(withJSONObject: json, options: .fragmentsAllowed)
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue(BaseAPI.HTTPHeaderFieldValue, forHTTPHeaderField: BaseAPI.HTTPHeaderFieldName)
             let task = URLSession.shared.dataTask(with: request) { data, _, error in
                 guard let data = data, error == nil else {
                     completion(false)
@@ -185,7 +204,7 @@ final class APICaller {
         playlist: Playlist,
         completion: @escaping (Bool) -> Void
     ) {
-        createRequest(with: URL(string: Constants.baseAPIURL + "/playlists/\(playlist.id)/tracks"), type: .DELETE) { baseRequest in
+        createRequest(with: "/playlists/\(playlist.id)/tracks", type: .DELETE) { baseRequest in
             var request = baseRequest
             let json = [
                 "tracks": [
@@ -195,7 +214,7 @@ final class APICaller {
                 ]
             ]
             request.httpBody = try? JSONSerialization.data(withJSONObject: json, options: .fragmentsAllowed)
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue(BaseAPI.HTTPHeaderFieldValue, forHTTPHeaderField: BaseAPI.HTTPHeaderFieldName)
             let task = URLSession.shared.dataTask(with: request) { data, _, error in
                 guard let data = data, error == nil else {
                     completion(false)
@@ -221,7 +240,7 @@ final class APICaller {
     // MARK: - Profile
     
     public func getCurrentUserProfile(completion: @escaping (Result<UserProfile, Error>) -> Void) {
-        createRequest(with: URL(string: Constants.baseAPIURL + "/me"), type: .GET) { [weak self] request in
+        createRequest(with: "/me") { [weak self] request in
             self?.makeRequest(with: request, for: UserProfile.self, completion: completion)
         }
     }
@@ -229,26 +248,38 @@ final class APICaller {
     // MARK: - Browse / Home
     
     public func getNewReleases(completion: @escaping ((Result<NewReleasesResponse, Error>)) -> Void) {
-        createRequest(with: URL(string: Constants.baseAPIURL + "/browse/new-releases?limit=50"), type: .GET) { [weak self] request in
+        createRequest(
+            with: "/browse/new-releases",
+            urlQuery: [URLQueryItem(name: APIQueryItems.limit, value: "50")]
+        ) { [weak self] request in
             self?.makeRequest(with: request, for: NewReleasesResponse.self, completion: completion)
         }
     }
     
     public func getFeaturedPlaylists(completion: @escaping ((Result<FeaturedPlaylistsResponse, Error>) -> Void)) {
-        createRequest(with: URL(string: Constants.baseAPIURL + "/browse/featured-playlists?limit=20"), type: .GET) { [weak self] request in
+        createRequest(
+            with: "/browse/featured-playlists",
+            urlQuery: [URLQueryItem(name: APIQueryItems.limit, value: "20")]
+        ) { [weak self] request in
             self?.makeRequest(with: request, for: FeaturedPlaylistsResponse.self, completion: completion)
         }
     }
     
     public func getRecommendedGenres(completion: @escaping ((Result<RecommendedGenreResponse, Error>) -> Void)) {
-        createRequest(with: URL(string: Constants.baseAPIURL + "/recommendations/available-genre-seeds"), type: .GET) { [weak self] request in
+        createRequest(with: "/recommendations/available-genre-seeds") { [weak self] request in
             self?.makeRequest(with: request, for: RecommendedGenreResponse.self, completion: completion)
         }
     }
     
     public func getRecommendations(genres: Set<String>, completion: @escaping ((Result<RecommendationsResponse, Error>) -> Void)) {
         let seeds = genres.joined(separator: ",")
-        createRequest(with: URL(string: Constants.baseAPIURL + "/recommendations?limit=50&seed_genres=\(seeds)"), type: .GET) { [weak self] request in
+        createRequest(
+            with: "/recommendations",
+            urlQuery: [
+                URLQueryItem(name: APIQueryItems.limit, value: "50"),
+                URLQueryItem(name: APIQueryItems.seedGenres, value: "\(seeds)")
+            ]
+        ) { [weak self] request in
             self?.makeRequest(with: request, for: RecommendationsResponse.self, completion: completion)
         }
     }
@@ -256,7 +287,10 @@ final class APICaller {
     // MARK: - Categories
     
     public func getCategories(completion: @escaping (Result<[Category], Error>) -> Void) {
-        createRequest(with: URL(string: Constants.baseAPIURL + "/browse/categories?limit=50"), type: .GET) { [weak self] request in
+        createRequest(
+            with: "/browse/categories",
+            urlQuery: [URLQueryItem(name: APIQueryItems.limit, value: "50")]
+        ) { [weak self] request in
             let task = URLSession.shared.dataTask(with: request) { data, _, error in
                 guard let data = data, error == nil, let self = self else {
                     completion(.failure(APIError.failedToGetData))
@@ -276,7 +310,10 @@ final class APICaller {
     }
     
     public func getCategoryPlaylists(category: Category, completion: @escaping (Result<[Playlist], Error>) -> Void) {
-        createRequest(with: URL(string: Constants.baseAPIURL + "/browse/categories/\(category.id)/playlists?limit=50"), type: .GET) { [weak self] request in
+        createRequest(
+            with: "/browse/categories/\(category.id)/playlists",
+            urlQuery: [URLQueryItem(name: APIQueryItems.limit, value: "50")]
+        ) { [weak self] request in
             let task = URLSession.shared.dataTask(with: request) { data, _, error in
                 guard let data = data, error == nil, let self = self else {
                     completion(.failure(APIError.failedToGetData))
@@ -300,8 +337,12 @@ final class APICaller {
     
     public func search(with query: String, completion: @escaping (Result<[SearchResult], Error>) -> Void) {
         createRequest(
-            with: URL(string: Constants.baseAPIURL + "/search?limit=10&type=\(Constants.searchQueryType)&q=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"),
-            type: .GET
+            with: "/search",
+            urlQuery: [
+                URLQueryItem(name: APIQueryItems.limit, value: "10"),
+                URLQueryItem(name: APIQueryItems.type, value: BaseAPI.searchQueryType),
+                URLQueryItem(name: APIQueryItems.query, value: query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")
+            ]
         ) { [weak self] request in
             let task = URLSession.shared.dataTask(with: request) { [weak self] data, _, error in
                 guard let data = data, error == nil, let self = self else {
@@ -312,10 +353,10 @@ final class APICaller {
                 do {
                     let result = try self.decoder.decode(SearchResultsResponse.self, from: data)
                     var searchResults = [SearchResult]()
-                    searchResults.append(contentsOf: result.albums.items.compactMap { .album(model: $0) })
-                    searchResults.append(contentsOf: result.artists.items.compactMap { .artist(model: $0) })
-                    searchResults.append(contentsOf: result.playlists.items.compactMap { .playlist(model: $0) })
-                    searchResults.append(contentsOf: result.tracks.items.compactMap { .track(model: $0) })
+                    searchResults.append(contentsOf: result.albums.items.compactMap(SearchResult.album))
+                    searchResults.append(contentsOf: result.artists.items.compactMap(SearchResult.artist))
+                    searchResults.append(contentsOf: result.playlists.items.compactMap(SearchResult.playlist))
+                    searchResults.append(contentsOf: result.tracks.items.compactMap(SearchResult.track))
                     
                     completion(.success(searchResults))
                 } catch {
@@ -347,11 +388,20 @@ final class APICaller {
         task.resume()
     }
     
-    private func createRequest(with url: URL?,
-                               type: HTTPMethod,
-                               completion: @escaping (URLRequest) -> Void) {
+    private func createRequest(
+        with path: String,
+        urlQuery items: [URLQueryItem]? = nil,
+        type: HTTPMethod = .GET,
+        completion: @escaping (URLRequest) -> Void
+    ) {
+        var compontens = URLComponents()
+        compontens.scheme = BaseAPI.scheme
+        compontens.host = BaseAPI.host
+        compontens.path = BaseAPI.verison + path
+        compontens.queryItems = items
+        
         AuthManager.shared.withValidToken { token in
-            guard let apiURL = url else {
+            guard let apiURL = compontens.url else {
                 return
             }
             var request = URLRequest(url: apiURL)
