@@ -21,9 +21,7 @@ private enum Constants {
     static let nameLabelWidthPadding: CGFloat = 15
 }
 
-class RecommendedTrackCollectionViewCell: UICollectionViewCell {
-    static let identifier = "RecommendedTrackCollectionViewCell"
-    
+class RecommendedTrackCollectionViewCell: UICollectionViewCell, Reusable {    
     private let albumCoverImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.masksToBounds = true

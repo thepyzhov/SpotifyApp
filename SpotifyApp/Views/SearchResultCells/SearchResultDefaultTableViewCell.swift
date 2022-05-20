@@ -8,9 +8,7 @@
 import UIKit
 import SDWebImage
 
-class SearchResultDefaultTableViewCell: UITableViewCell {
-    static let identifier = "SearchResultDefaultTableViewCell"
-    
+class SearchResultDefaultTableViewCell: UITableViewCell, Reusable {    
     private let iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill

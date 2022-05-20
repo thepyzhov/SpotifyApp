@@ -15,9 +15,7 @@ private enum Constants {
     static let nameLabelWidthPadding: CGFloat = 15
 }
 
-class AlbumTrackCollectionViewCell: UICollectionViewCell {
-    static let identifier = "AlbumTrackCollectionViewCell"
-    
+class AlbumTrackCollectionViewCell: UICollectionViewCell, Reusable {
     private let trackNameLabel: UILabel = {
         let label = UILabel()
         label.font = Constants.trackNameLabelFont

@@ -14,9 +14,7 @@ private enum Constants {
     static let labelWidthPadding: CGFloat = 20
 }
 
-class TitleHeaderCollectionReusableView: UICollectionReusableView {
-    static let identifier = "TitleHeaderCollectionReusableView"
-    
+class TitleHeaderCollectionReusableView: UICollectionReusableView, Reusable {    
     private let label: UILabel = {
         let label = UILabel()
         label.textColor = .white

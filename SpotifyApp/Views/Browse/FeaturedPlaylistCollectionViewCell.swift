@@ -23,9 +23,7 @@ private enum Constants {
     static let imageSizePadding: CGFloat = 70
 }
 
-class FeaturedPlaylistCollectionViewCell: UICollectionViewCell {
-    static let identifier = "FeaturedPlaylistCollectionViewCell"
-    
+class FeaturedPlaylistCollectionViewCell: UICollectionViewCell, Reusable {    
     private let playlistCoverImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.masksToBounds = true

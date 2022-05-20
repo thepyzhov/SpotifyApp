@@ -42,7 +42,7 @@ final class PlaybackPresenter {
     private var index = 0
     
     func startPlayback(from viewController: UIViewController, track: AudioTrack) {
-        guard let songURL = URL(string: track.previewURL ?? "") else {
+        guard let songURL = URL(string: track.previewUrl ?? "") else {
             return
         }
         player = AVPlayer(url: songURL)
@@ -68,7 +68,7 @@ final class PlaybackPresenter {
         self.track = nil
         
         self.playerQueue = AVQueuePlayer(items: tracks.compactMap {
-            guard let songURL = URL(string: $0.previewURL ?? "") else {
+            guard let songURL = URL(string: $0.previewUrl ?? "") else {
                 return nil
             }
             return AVPlayerItem(url: songURL)

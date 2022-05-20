@@ -22,9 +22,7 @@ private enum Constants {
     static let numberOfTracksLabelHeight: CGFloat = 44
 }
 
-class NewReleaseCollectionViewCell: UICollectionViewCell{
-    static let identifier = "NewReleaseCollectionViewCell"
-    
+class NewReleaseCollectionViewCell: UICollectionViewCell, Reusable {
     private let albumCoverImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "photo")
@@ -62,7 +60,6 @@ class NewReleaseCollectionViewCell: UICollectionViewCell{
         contentView.addSubview(numberOfTracksLabel)
         
         contentView.clipsToBounds = true
-//        print(NewReleaseCollectionViewCell.identifier)
     }
     
     required init?(coder: NSCoder) {

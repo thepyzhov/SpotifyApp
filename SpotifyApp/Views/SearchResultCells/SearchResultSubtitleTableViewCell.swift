@@ -8,9 +8,7 @@
 import UIKit
 import SDWebImage
 
-class SearchResultSubtitleTableViewCell: UITableViewCell {
-    static let identifier = "SearchResultSubtitleTableViewCell"
-    
+class SearchResultSubtitleTableViewCell: UITableViewCell, Reusable {    
     private let iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill

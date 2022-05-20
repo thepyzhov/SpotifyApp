@@ -27,9 +27,7 @@ private enum Constants {
     static let playAllButtonSymbolPointSize: CGFloat = playAllButtonSize / 2
 }
 
-final class PlaylistHeaderCollectionReusableView: UICollectionReusableView {
-    static let identifier = "PlaylistHeaderCollectionReusableView"
-    
+final class PlaylistHeaderCollectionReusableView: UICollectionReusableView, Reusable {    
     weak var delegate: PlaylistHeaderCollectionReusableViewDelegate?
     
     private let nameLabel: UILabel = {

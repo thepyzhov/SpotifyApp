@@ -17,9 +17,7 @@ private enum Constants {
     )
 }
 
-class CategoryCollectionViewCell: UICollectionViewCell {
-    static let identifier = "CategoryCollectionViewCell"
-    
+class CategoryCollectionViewCell: UICollectionViewCell, Reusable {    
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
