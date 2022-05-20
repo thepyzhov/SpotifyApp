@@ -11,6 +11,8 @@ private enum Constants {
     static let baseAPIURL = "https://api.spotify.com/v1"
     
     static let searchQueryType = "album,artist,playlist,track"
+    
+    static let successCode: Int = 200
 }
 
 final class APICaller {
@@ -71,7 +73,7 @@ final class APICaller {
                     return
                 }
                 
-                completion(code == 200)
+                completion(code == Constants.successCode)
             }
             task.resume()
         }

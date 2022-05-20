@@ -19,6 +19,12 @@ final class AuthManager {
     
     private var refreshingToken = false
     
+    private var decoder: JSONDecoder = {
+        let jsonDecoder = JSONDecoder()
+        jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+        return jsonDecoder
+    }()
+    
     private init() {}
     
     public var signInURL: URL? {
@@ -110,14 +116,14 @@ final class AuthManager {
         request.httpBody = components.query?.data(using: .utf8)
         
         let task = URLSession.shared.dataTask(with: request) { [weak self] data, _, error in
-            guard let data = data, error == nil else {
+            guard let data = data, error == nil, let self = self else {
                 completion(false)
                 return
             }
             
             do {
-                let result = try JSONDecoder().decode(AuthResponse.self, from: data)
-                self?.cacheToken(result: result)
+                let result = try self.decoder.decode(AuthResponse.self, from: data)
+                self.cacheToken(result: result)
                 completion(true)
             } catch {
                 print(error.localizedDescription)
@@ -179,16 +185,16 @@ final class AuthManager {
         
         let task = URLSession.shared.dataTask(with: request) { [weak self] data, _, error in
             self?.refreshingToken = false
-            guard let data = data, error == nil else {
+            guard let data = data, error == nil, let self = self else {
                 completion?(false)
                 return
             }
             
             do {
-                let result = try JSONDecoder().decode(AuthResponse.self, from: data)
-                self?.onRefreshBlocks.forEach { $0(result.accessToken) }
-                self?.onRefreshBlocks.removeAll()
-                self?.cacheToken(result: result)
+                let result = try self.decoder.decode(AuthResponse.self, from: data)
+                self.onRefreshBlocks.forEach { $0(result.accessToken) }
+                self.onRefreshBlocks.removeAll()
+                self.cacheToken(result: result)
                 completion?(true)
             } catch {
                 print(error.localizedDescription)
